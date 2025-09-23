@@ -4653,6 +4653,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-addon-api@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "node-addon-api@npm:3.2.1"
+  dependencies:
+    node-gyp: latest
+  checksum: 2369986bb0881ccd9ef6bacdf39550e07e089a9c8ede1cbc5fc7712d8e2faa4d50da0e487e333d4125f8c7a616c730131d1091676c9d499af1d74560756b4a18
+  languageName: node
+  linkType: hard
+
 "node-addon-api@npm:^4.2.0":
   version: 4.3.0
   resolution: "node-addon-api@npm:4.3.0"
@@ -4744,6 +4753,19 @@ __metadata:
   bin:
     node-gyp: bin/node-gyp.js
   checksum: 78b404e2e0639d64e145845f7f5a3cb20c0520cdaf6dda2f6e025e9b644077202ea7de1232396ba5bde3fee84cdc79604feebe6ba3ec84d464c85d407bb5da99
+  languageName: node
+  linkType: hard
+
+"node-hid@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "node-hid@npm:3.2.0"
+  dependencies:
+    node-addon-api: ^3.2.1
+    node-gyp: latest
+    pkg-prebuilds: ^1.0.0
+  bin:
+    hid-showdevices: src/show-devices.js
+  checksum: 50b81d8f76cfe543c33d907192bc244283f0d2f85964a6d10c20457b1044b49a22b5ce1bbac1d04a8bb527b011def3a17dfc1570e58158989538f8a6f96cae41
   languageName: node
   linkType: hard
 
@@ -5077,6 +5099,18 @@ __metadata:
   dependencies:
     find-up: ^4.0.0
   checksum: 9863e3f35132bf99ae1636d31ff1e1e3501251d480336edb1c211133c8d58906bed80f154a1d723652df1fda91e01c7442c2eeaf9dc83157c7ae89087e43c8d6
+  languageName: node
+  linkType: hard
+
+"pkg-prebuilds@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "pkg-prebuilds@npm:1.0.0"
+  dependencies:
+    yargs: ^17.7.2
+  bin:
+    pkg-prebuilds-copy: bin/copy.mjs
+    pkg-prebuilds-verify: bin/verify.mjs
+  checksum: 5cb432ba050d5756f64c788ea70d0c106f0503cc12087350c7e817d6bea499540c65197d4476f7cfb7fb31a93a12d25ffc8e62617cdc4d35db19cc903e9f2f2e
   languageName: node
   linkType: hard
 
@@ -5973,9 +6007,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stm32_pomohlo_tool@workspace:.":
+"stm32_usb_hid_tool@workspace:.":
   version: 0.0.0-use.local
-  resolution: "stm32_pomohlo_tool@workspace:."
+  resolution: "stm32_usb_hid_tool@workspace:."
   dependencies:
     "@emotion/react": ^11.10.5
     "@emotion/styled": ^11.10.5
@@ -5999,6 +6033,7 @@ __metadata:
     electron-updater: ^6.3.9
     eslint-plugin-react-hooks: ^4.6.0
     html-webpack-plugin: ^5.5.0
+    node-hid: ^3.2.0
     pdf2json: ~2.0.1
     react: ^19.0.0
     react-dom: ^19.0.0
@@ -6740,7 +6775,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs@npm:^17.0.1, yargs@npm:^17.6.2":
+"yargs@npm:^17.0.1, yargs@npm:^17.6.2, yargs@npm:^17.7.2":
   version: 17.7.2
   resolution: "yargs@npm:17.7.2"
   dependencies:

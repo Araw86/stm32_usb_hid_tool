@@ -13,6 +13,8 @@ import { autoUpdater, UpdateInfo } from "electron-updater"
 /*ipc */
 import ipcHandlers from './ipcHandlers'
 
+import HID from 'node-hid'
+
 const electronDl = require('electron-dl');
 // const storeHandling = require('./utilities/storeHandling.js');
 
@@ -39,25 +41,6 @@ async function createWindow() {
 
 
 
-
-  // /* menu to test ipcToRenderer */
-  // const menu = Menu.buildFromTemplate([
-  //   {
-  //     label: app.name,
-  //     submenu: [
-  //       {
-  //         click: () => win.webContents.send('receive-msg', 'Msg A'),
-  //         label: 'Msg A',
-  //       },
-  //       {
-  //         click: () => win.webContents.send('receive-msg', 'Msg B'),
-  //         label: 'Mgg B',
-  //       }
-  //     ]
-  //   }
-
-  // ])
-
   // Menu.setApplicationMenu(menu)
 
 
@@ -65,6 +48,8 @@ async function createWindow() {
     win.loadFile(path.join(__dirname, '../renderer/index.html'))
     autoUpdater.checkForUpdates();
   }
+
+  console.log(HID.devices());
 
   // Open the DevTools.
   if (isDev) {
