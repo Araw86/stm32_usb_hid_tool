@@ -22,9 +22,12 @@ const electronDl = require('electron-dl');
 
 import {store} from './store/mainStore'
 
+import { increment } from '../shared/redux/slices/testSlice';
+
 electronDl();
 let win: BrowserWindow | null;
 
+let hidDevice : any | null; 
 async function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
@@ -49,7 +52,12 @@ async function createWindow() {
     autoUpdater.checkForUpdates();
   }
 
-  console.log(HID.devices());
+  // console.log(HID.devices());
+  hidDevice = await HID.HIDAsync.open(1155,22288,{ nonExclusive: true });
+  const handleHidData= (data:any)=>{
+    console.log(data);
+  }
+  // hidDevice.on("data", handleHidData);
 
   // Open the DevTools.
   if (isDev) {
@@ -205,17 +213,27 @@ app.on('activate', function () {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) createWindow()
 });
-
+let numberSend : number =0;
 /*store test */
 const render = () => {
-  // if (win) {
-  //     const { testSlice } = store.getState()
-  //     console.log('store change: ');
-  //     console.log(testSlice);
-  // }
+  if (win) {
+      const { testSlice } = store.getState()
+      console.log('store change: ');
+      console.log(testSlice);
+      if(numberSend ==0){
+        hidDevice.write([1]);
+        numberSend++;
+        console.log("send 1");
+      }else{
+        hidDevice.write([2]);
+        console.log("send 2");
+        numberSend =0;
+      }
+      
+  }
 }
 
 store.subscribe(render);
-
 console.log('store subscrabe')
+// store.dispatch(increment());
 

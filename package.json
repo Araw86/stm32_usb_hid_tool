@@ -28,6 +28,7 @@
     "sqlite3": "^5.1.4"
   },
   "devDependencies": {
+    "@electron/rebuild": "^4.0.1",
     "@types/node": "^22.10.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
@@ -55,7 +56,7 @@
     "build_dev": "webpack --config webpack.dev.js",
     "build_prod": "webpack --config webpack.prod.js",
     "build_dist": "webpack --config webpack.prod.js && electron-builder -c.extraMetadata.main=build/main/main.js",
-    "build_dist_only": "electron-builder -c.extraMetadata.main=build/main/main.js",
+    "build_dist_only": "electron-rebuild -f -w node-hid && electron-builder -c.extraMetadata.main=build/main/main.js --win",
     "build_dist_github": "yarn build_dist_only --win --publish always"
   },
   "build": {
