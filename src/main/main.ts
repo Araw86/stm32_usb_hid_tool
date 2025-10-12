@@ -13,8 +13,6 @@ import { autoUpdater, UpdateInfo } from "electron-updater"
 /*ipc */
 import ipcHandlers from './ipcHandlers'
 
-import HID from 'node-hid'
-
 const electronDl = require('electron-dl');
 // const storeHandling = require('./utilities/storeHandling.js');
 
@@ -23,11 +21,12 @@ const electronDl = require('electron-dl');
 import {store} from './store/mainStore'
 
 import { increment } from '../shared/redux/slices/testSlice';
+import usbManager from './usbManager';
 
 electronDl();
 let win: BrowserWindow | null;
 
-let hidDevice : any | null; 
+
 async function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
@@ -42,7 +41,7 @@ async function createWindow() {
     // autoHideMenuBar: false // show menu in window
   });
 
-
+  usbManager.fUsbManager();
 
   // Menu.setApplicationMenu(menu)
 
@@ -52,12 +51,7 @@ async function createWindow() {
     autoUpdater.checkForUpdates();
   }
 
-  // console.log(HID.devices());
-  hidDevice = await HID.HIDAsync.open(1155,22288,{ nonExclusive: true });
-  const handleHidData= (data:any)=>{
-    console.log(data);
-  }
-  // hidDevice.on("data", handleHidData);
+
 
   // Open the DevTools.
   if (isDev) {
@@ -220,15 +214,15 @@ const render = () => {
       const { testSlice } = store.getState()
       console.log('store change: ');
       console.log(testSlice);
-      if(numberSend ==0){
-        hidDevice.write([1]);
-        numberSend++;
-        console.log("send 1");
-      }else{
-        hidDevice.write([2]);
-        console.log("send 2");
-        numberSend =0;
-      }
+      // if(numberSend ==0){
+      //   hidDevice.write([1]);
+      //   numberSend++;
+      //   console.log("send 1");
+      // }else{
+      //   hidDevice.write([2]);
+      //   console.log("send 2");
+      //   numberSend =0;
+      // }
       
   }
 }
