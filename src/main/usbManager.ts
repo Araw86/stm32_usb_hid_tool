@@ -68,12 +68,17 @@ function fHidSendImage(image:Buffer){
     return;
   }
   const imageLength = image.length;
-  console.log(imageLength);
+  const imageNumber = 0
   let aCmd = new Uint8Array(16);
   let aData = new Uint8Array(512);
+
   aCmd[0]=1;
-  aCmd[1]=2;
-  aCmd[2]=3;
+  aCmd[1] = 0xff & imageNumber;
+  aCmd[2] = 0xff & (imageNumber >> 8);
+  aCmd[4]=0xff & imageLength;
+  aCmd[5]=0xff & (imageLength >> 8);
+  aCmd[6]=0xff & (imageLength >> 16);
+  aCmd[7]=0xff & (imageLength >> 24);
   hidDevice.write(aCmd);
   aData[0]=2; // ID 2 -- copy images 
   let nCnt=0;
@@ -85,10 +90,12 @@ function fHidSendImage(image:Buffer){
     }
     image.copy(aData,1,nStart,nStop);
     nCnt+= nStop-nStart;
-    console.log(nCnt);
     hidDevice.write(aData);
   }
 }
+
+// function fHidSendKey
+
 
 const usbManager = {fUsbManager,fHidSend,fUsbConnect,fUsbDisconnect,fHidSendImage};
 
