@@ -14,6 +14,8 @@ import {
   disconnect,
   send,
   listImages,
+  listImages2,
+  listImages3,
 } from '../../shared/redux/slices/testSlice';
 
 //TypedUseSelectorHook<RootState>
@@ -62,6 +64,20 @@ function TestComponent() {
           }}
         >
           List Images
+        </Button>
+        <Button
+          onClick={() => {
+            store.dispatch(listImages2());
+          }}
+        >
+          List Images2
+        </Button>
+        <Button
+          onClick={() => {
+            store.dispatch(listImages3());
+          }}
+        >
+          List Images3
         </Button>
       </Box>
     </Box>

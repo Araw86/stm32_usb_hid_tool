@@ -3,7 +3,7 @@ const path = require('path');
 
 
 /*debug*/
-const isDev = require('electron-is-dev')
+// const isDev = require('electron-is-dev')
 import {  installExtension,  REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS} from "electron-devtools-installer"
 
 
@@ -44,9 +44,12 @@ async function createWindow() {
   usbManager.fUsbManager();
 
   // Menu.setApplicationMenu(menu)
-
-
-  if (!isDev) {
+  if (!app.isPackaged) {
+    console.log('Running in development');
+  } else {
+    console.log('Running in production');
+  }
+  if (app.isPackaged) {
     win.loadFile(path.join(__dirname, '../renderer/index.html'))
     autoUpdater.checkForUpdates();
   }
@@ -54,7 +57,7 @@ async function createWindow() {
 
 
   // Open the DevTools.
-  if (isDev) {
+  if (!app.isPackaged) {
 
     await win.loadFile('./build/renderer/index.html')
     // console.log("Open dev tools")
@@ -74,7 +77,7 @@ async function createWindow() {
 
 }
 
-// if (isDev) {
+// if (!app.isPackaged) {
 //   // electron reload
 //   console.log('test ' + __dirname);
 //   require('electron-reload')(path.join(__dirname, '..', '..'), {
@@ -86,7 +89,7 @@ async function createWindow() {
 app.on('ready',async () => {
   createWindow();
   ipcHandlers();
-  if (isDev) {
+  if (!app.isPackaged) {
     try { 
       // [REDUX_DEVTOOLS,REACT_DEVELOPER_TOOLS].map((extention)=>{
       //   installExtension(extention)

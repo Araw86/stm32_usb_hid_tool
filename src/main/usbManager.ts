@@ -94,9 +94,77 @@ function fHidSendImage(image:Buffer){
   }
 }
 
+const HID_DATA_MESSAGE_SIZE2 = 1023
+function fHidSendImage2(image:Buffer){
+  console.log('Send image');
+  if(hidDevice==null){
+    console.log(`device not connected`);
+    return;
+  }
+  const imageLength = image.length;
+  const imageNumber = 0
+  let aCmd = new Uint8Array(16);
+  let aData = new Uint8Array(1024);
+
+  aCmd[0]=1;
+  aCmd[1] = 0xff & imageNumber;
+  aCmd[2] = 0xff & (imageNumber >> 8);
+  aCmd[4]=0xff & imageLength;
+  aCmd[5]=0xff & (imageLength >> 8);
+  aCmd[6]=0xff & (imageLength >> 16);
+  aCmd[7]=0xff & (imageLength >> 24);
+  hidDevice.write(aCmd);
+  aData[0]=2; // ID 2 -- copy images 
+  let nCnt=0;
+  for(let i=0;(i*2)< imageLength;i++){
+    let nStart = i*HID_DATA_MESSAGE_SIZE2;
+    let nStop = (i+1)*HID_DATA_MESSAGE_SIZE2;
+    if(nStop>imageLength){
+      nStop= imageLength
+    }
+    image.copy(aData,1,nStart,nStop);
+    nCnt+= nStop-nStart;
+    hidDevice.write(aData);
+  }
+}
+
+const HID_DATA_MESSAGE_SIZE3 = 40139
+function fHidSendImage3(image:Buffer){
+  console.log('Send image');
+  if(hidDevice==null){
+    console.log(`device not connected`);
+    return;
+  }
+  const imageLength = image.length;
+  const imageNumber = 0
+  let aCmd = new Uint8Array(16);
+  let aData = new Uint8Array(HID_DATA_MESSAGE_SIZE3);
+
+  aCmd[0]=1;
+  aCmd[1] = 0xff & imageNumber;
+  aCmd[2] = 0xff & (imageNumber >> 8);
+  aCmd[4]=0xff & imageLength;
+  aCmd[5]=0xff & (imageLength >> 8);
+  aCmd[6]=0xff & (imageLength >> 16);
+  aCmd[7]=0xff & (imageLength >> 24);
+  hidDevice.write(aCmd);
+  aData[0]=2; // ID 2 -- copy images 
+  let nCnt=0;
+  for(let i=0;(i*HID_DATA_MESSAGE_SIZE3)< imageLength;i++){
+    let nStart = i*HID_DATA_MESSAGE_SIZE3;
+    let nStop = (i+1)*HID_DATA_MESSAGE_SIZE3;
+    if(nStop>imageLength){
+      nStop= imageLength
+    }
+    image.copy(aData,1,nStart,nStop);
+    nCnt+= nStop-nStart;
+    hidDevice.write(aData);
+  }
+}
+
 // function fHidSendKey
 
 
-const usbManager = {fUsbManager,fHidSend,fUsbConnect,fUsbDisconnect,fHidSendImage};
+const usbManager = {fUsbManager,fHidSend,fUsbConnect,fUsbDisconnect,fHidSendImage,fHidSendImage2,fHidSendImage3};
 
 export default usbManager;

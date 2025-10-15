@@ -8,6 +8,8 @@ export interface TestInterface {
   connectState:boolean;
   send:boolean;
   listImages:boolean;
+  listImages2:boolean;
+  listImages3:boolean;
 }
 
 
@@ -17,7 +19,9 @@ const initialState: TestInterface = {
   disconnect:false,
   connectState:false,
   send:false,
-  listImages:false
+  listImages:false,
+  listImages2:false,
+  listImages3:false
 }
 
 
@@ -40,11 +44,17 @@ const testSlice = createSlice({
     listImages(slice,action:PayloadAction<null>){
       slice.listImages=true;
     },
+    listImages2(slice,action:PayloadAction<null>){
+      slice.listImages2=true;
+    },
+    listImages3(slice,action:PayloadAction<null>){
+      slice.listImages3=true;
+    },
 
   }
 });
 
 /*export dispatch functions */
-export const { increment,connect,disconnect,send, listImages } = testSlice.actions;
+export const { increment,connect,disconnect,send, listImages,listImages2,listImages3 } = testSlice.actions;
 /* export reducer */
 export default testSlice.reducer;

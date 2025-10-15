@@ -45,10 +45,28 @@ export function createMainListeners() {
     effect: async (action,state) => {
       console.log(`listImages`);
       let aFileList= fileReader.aListImages();
-      console.log(`list`);
-      console.log(aFileList);
       let file = fileReader.aReadFile(aFileList[0]);
       usbManager.fHidSendImage(file);
+    }
+  });
+
+  listener.startListening({
+    type: 'testReducer/listImages2',
+    effect: async (action,state) => {
+      console.log(`listImages2`);
+      let aFileList= fileReader.aListImages();
+      let file = fileReader.aReadFile(aFileList[0]);
+      usbManager.fHidSendImage2(file);
+    }
+  });
+
+  listener.startListening({
+    type: 'testReducer/listImages3',
+    effect: async (action,state) => {
+      console.log(`listImages3`);
+      let aFileList= fileReader.aListImages();
+      let file = fileReader.aReadFile(aFileList[0]);
+      usbManager.fHidSendImage3(file);
     }
   });
   // listener.startListening({
