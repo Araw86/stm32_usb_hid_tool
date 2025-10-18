@@ -36,6 +36,7 @@ module.exports =
   ],
   externals: {
     sqlite3: 'commonjs sqlite3',
-    "node-hid": 'commonjs node-hid'
+    "node-hid": 'commonjs node-hid',
+    "usb": 'commonjs usb'
   },
 }

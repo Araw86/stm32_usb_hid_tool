@@ -1,8 +1,11 @@
 import HID from 'node-hid'
+import {usb,findByIds } from 'usb'
 
 let hidDevice : any | null; 
-async function fUsbManager():Promise<void>{
+const TARGET_VID = 1155;
+const TARGET_PID = 22288;
 
+async function fUsbManager():Promise<void>{
 
 
   // hidDevice.write([0x1]);
@@ -14,6 +17,36 @@ async function fUsbManager():Promise<void>{
 }
 
 const HID_DATA_MESSAGE_SIZE = 511
+
+
+console.log('usb library handle attach deatch')
+usb.on('attach',deviceAttached);// chec kif device was attached
+usb.on('detach',deviceDetach);//check if device was detached
+deviceConnected(); //check if device is already connected
+
+function deviceConnected(){
+  const device =findByIds(TARGET_VID,TARGET_PID);
+  if(device){
+    console.log('Device already connected')
+  }
+}
+
+
+function deviceAttached(device:any){
+  const vid=device.deviceDescriptor.idVendor
+  const pid=device.deviceDescriptor.idProduct
+  if ((vid == TARGET_VID) && ( pid == TARGET_PID)){
+    console.log('Attach')
+  }
+}
+
+function deviceDetach(device:any){
+  const vid=device.deviceDescriptor.idVendor
+  const pid=device.deviceDescriptor.idProduct
+  if ((vid == TARGET_VID) && ( pid == TARGET_PID)){
+    console.log('Detach')
+  }
+}
 
 async function fUsbConnect(){
    /* start usb functions*/
