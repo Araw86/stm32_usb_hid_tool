@@ -50,11 +50,17 @@ const testSlice = createSlice({
     listImages3(slice,action:PayloadAction<null>){
       slice.listImages3=true;
     },
+    deviceIsConnected(slice,action:PayloadAction<null>){
+      slice.connectState =true;
+    },
+    deviceIsDisconnected(slice,action:PayloadAction<null>){
+      slice.connectState =false;
+    }
 
   }
 });
 
 /*export dispatch functions */
-export const { increment,connect,disconnect,send, listImages,listImages2,listImages3 } = testSlice.actions;
+export const { increment,connect,disconnect,send, listImages,listImages2,listImages3,deviceIsConnected,deviceIsDisconnected } = testSlice.actions;
 /* export reducer */
 export default testSlice.reducer;

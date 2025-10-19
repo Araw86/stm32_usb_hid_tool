@@ -1,5 +1,8 @@
 import HID from 'node-hid'
 import {usb,findByIds } from 'usb'
+import {store} from './store/mainStore'
+import { deviceIsConnected, deviceIsDisconnected } from '../shared/redux/slices/testSlice';
+
 
 let hidDevice : any | null; 
 const TARGET_VID = 1155;
@@ -13,7 +16,7 @@ async function fUsbManager():Promise<void>{
   //   console.log(data);
   // }
   // hidDevice.on("data", handleHidData);
-
+  deviceConnected();
 }
 
 const HID_DATA_MESSAGE_SIZE = 511
@@ -22,12 +25,14 @@ const HID_DATA_MESSAGE_SIZE = 511
 console.log('usb library handle attach deatch')
 usb.on('attach',deviceAttached);// chec kif device was attached
 usb.on('detach',deviceDetach);//check if device was detached
-deviceConnected(); //check if device is already connected
+// deviceConnected(); //check if device is already connected
 
 function deviceConnected(){
   const device =findByIds(TARGET_VID,TARGET_PID);
   if(device){
     console.log('Device already connected')
+    fUsbConnect();
+    store.dispatch(deviceIsConnected());
   }
 }
 
@@ -37,6 +42,8 @@ function deviceAttached(device:any){
   const pid=device.deviceDescriptor.idProduct
   if ((vid == TARGET_VID) && ( pid == TARGET_PID)){
     console.log('Attach')
+    fUsbConnect();
+    store.dispatch(deviceIsConnected());
   }
 }
 
@@ -45,6 +52,8 @@ function deviceDetach(device:any){
   const pid=device.deviceDescriptor.idProduct
   if ((vid == TARGET_VID) && ( pid == TARGET_PID)){
     console.log('Detach')
+    fUsbDisconnect();
+    store.dispatch(deviceIsDisconnected());
   }
 }
 
@@ -53,12 +62,12 @@ async function fUsbConnect(){
    let hidDevices = await HID.devices();
    let sPath = findDevicePath(hidDevices,22288,1155,2);
    hidDevice = await HID.HIDAsync.open(sPath);
-   console.log('connect');
+   console.log('connected');
 }
 
 function fUsbDisconnect(): void{
   hidDevice =null;
-  console.log('disconnect');
+  console.log('disconnected');
 }
 
 function findDevicePath(alistOfDevices: Array<any>, nPid:number,nVid:number,nInterface:number): string |any{
@@ -129,7 +138,7 @@ function fHidSendImage(image:Buffer){
 
 const HID_DATA_MESSAGE_SIZE2 = 1023
 function fHidSendImage2(image:Buffer){
-  console.log('Send image');
+  console.log('Send image2');
   if(hidDevice==null){
     console.log(`device not connected`);
     return;
@@ -149,7 +158,7 @@ function fHidSendImage2(image:Buffer){
   hidDevice.write(aCmd);
   aData[0]=2; // ID 2 -- copy images 
   let nCnt=0;
-  for(let i=0;(i*2)< imageLength;i++){
+  for(let i=0;(i*HID_DATA_MESSAGE_SIZE2)< imageLength;i++){
     let nStart = i*HID_DATA_MESSAGE_SIZE2;
     let nStop = (i+1)*HID_DATA_MESSAGE_SIZE2;
     if(nStop>imageLength){
