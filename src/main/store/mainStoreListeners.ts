@@ -17,36 +17,10 @@ export function createMainListeners() {
   });
 
   listener.startListening({
-    type: 'testReducer/connect',
-    effect: async (action,state) => {
-      console.log(state.getState());
-      usbManager.fUsbConnect();
-    }
-  });
-
-
-  listener.startListening({
-    type: 'testReducer/disconnect',
-    effect: async (action,state) => {
-      console.log(state.getState());
-      usbManager.fUsbDisconnect();
-    }
-  });
-
-  listener.startListening({
     type: 'testReducer/send',
     effect: async (action,state) => {
       console.log(state.getState());
       usbManager.fHidSend();
-    }
-  });
-  listener.startListening({
-    type: 'testReducer/listImages',
-    effect: async (action,state) => {
-      console.log(`listImages`);
-      let aFileList= fileReader.aListImages();
-      let file = fileReader.aReadFile(aFileList[0]);
-      usbManager.fHidSendImage(file);
     }
   });
 
@@ -60,15 +34,6 @@ export function createMainListeners() {
     }
   });
 
-  listener.startListening({
-    type: 'testReducer/listImages3',
-    effect: async (action,state) => {
-      console.log(`listImages3`);
-      let aFileList= fileReader.aListImages();
-      let file = fileReader.aReadFile(aFileList[0]);
-      usbManager.fHidSendImage3(file);
-    }
-  });
   // listener.startListening({
   //   predicate: (action) => {
   //     console.log(action)
