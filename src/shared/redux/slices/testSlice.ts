@@ -38,6 +38,9 @@ const testSlice = createSlice({
     listImages2(slice,action:PayloadAction<null>){
       slice.listImages2=true;
     },
+    listImages(slice,action:PayloadAction<null>){
+      slice.listImages=true;
+    },
     deviceIsConnected(slice,action:PayloadAction<null>){
       slice.connectState =true;
     },
@@ -49,6 +52,6 @@ const testSlice = createSlice({
 });
 
 /*export dispatch functions */
-export const { increment,send, listImages2,deviceIsConnected,deviceIsDisconnected } = testSlice.actions;
+export const { increment,send, listImages2,deviceIsConnected,deviceIsDisconnected ,listImages} = testSlice.actions;
 /* export reducer */
 export default testSlice.reducer;

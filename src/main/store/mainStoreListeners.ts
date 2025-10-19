@@ -34,6 +34,16 @@ export function createMainListeners() {
     }
   });
 
+  listener.startListening({
+    type: 'testReducer/listImages',
+    effect: async (action,state) => {
+      console.log(`listImages`);
+      let aFileList= fileReader.aListImages();
+      let file = fileReader.aReadFile(aFileList[0]);
+      usbManager.fHidSendImage(file);
+    }
+  });
+
   // listener.startListening({
   //   predicate: (action) => {
   //     console.log(action)

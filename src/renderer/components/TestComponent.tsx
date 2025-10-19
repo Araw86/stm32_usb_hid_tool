@@ -8,7 +8,11 @@ import { Button } from '@mui/material';
 /*redux import*/
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { RootState, store } from '../store/storeRenderer';
-import { increment, listImages2 } from '../../shared/redux/slices/testSlice';
+import {
+  increment,
+  listImages,
+  listImages2,
+} from '../../shared/redux/slices/testSlice';
 
 //TypedUseSelectorHook<RootState>
 function TestComponent() {
@@ -34,7 +38,14 @@ function TestComponent() {
             store.dispatch(listImages2());
           }}
         >
-          Send image
+          Send image node-hid
+        </Button>
+        <Button
+          onClick={() => {
+            store.dispatch(listImages());
+          }}
+        >
+          Send image over node-usb
         </Button>
       </Box>
     </Box>

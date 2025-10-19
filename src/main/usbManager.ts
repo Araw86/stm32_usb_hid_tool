@@ -1,10 +1,11 @@
 import HID from 'node-hid'
-import {usb,findByIds } from 'usb'
+import {usb,findByIds, OutEndpoint } from 'usb'
 import {store} from './store/mainStore'
 import { deviceIsConnected, deviceIsDisconnected } from '../shared/redux/slices/testSlice';
 
 
 let hidDevice : any | null; 
+let deviceOutEndpoint:null|OutEndpoint;
 const TARGET_VID = 1155;
 const TARGET_PID = 22288;
 
@@ -53,20 +54,37 @@ function deviceDetach(device:any){
   if ((vid == TARGET_VID) && ( pid == TARGET_PID)){
     console.log('Detach')
     fUsbDisconnect();
+
+
     store.dispatch(deviceIsDisconnected());
   }
 }
 
 async function fUsbConnect(){
-   /* start usb functions*/
-   let hidDevices = await HID.devices();
-   let sPath = findDevicePath(hidDevices,22288,1155,2);
-   hidDevice = await HID.HIDAsync.open(sPath);
-   console.log('connected');
+  /* start usb functions*/
+  // let hidDevices = await HID.devices();
+  // let sPath = findDevicePath(hidDevices,22288,1155,2);
+  // hidDevice = await HID.HIDAsync.open(sPath);
+   
+  const device =findByIds(TARGET_VID,TARGET_PID);
+  if(device){
+    device.open();
+    let deviceInterface = device.interface(2);
+    deviceInterface.claim();
+    let deviceEndpoints = deviceInterface.endpoints;
+    deviceOutEndpoint = <OutEndpoint> deviceEndpoints[1]//out endpoint
+    store.dispatch(deviceIsConnected());
+  }
+   
+   
+  console.log('connected');
+
+
 }
 
 function fUsbDisconnect(): void{
   hidDevice =null;
+  deviceOutEndpoint=null;
   console.log('disconnected');
 }
 
@@ -103,39 +121,6 @@ function fHidSend(){
   }
 }
 
-function fHidSendImage(image:Buffer){
-  console.log('Send image');
-  if(hidDevice==null){
-    console.log(`device not connected`);
-    return;
-  }
-  const imageLength = image.length;
-  const imageNumber = 0
-  let aCmd = new Uint8Array(16);
-  let aData = new Uint8Array(512);
-
-  aCmd[0]=1;
-  aCmd[1] = 0xff & imageNumber;
-  aCmd[2] = 0xff & (imageNumber >> 8);
-  aCmd[4]=0xff & imageLength;
-  aCmd[5]=0xff & (imageLength >> 8);
-  aCmd[6]=0xff & (imageLength >> 16);
-  aCmd[7]=0xff & (imageLength >> 24);
-  hidDevice.write(aCmd);
-  aData[0]=2; // ID 2 -- copy images 
-  let nCnt=0;
-  for(let i=0;(i*HID_DATA_MESSAGE_SIZE)< imageLength;i++){
-    let nStart = i*HID_DATA_MESSAGE_SIZE;
-    let nStop = (i+1)*HID_DATA_MESSAGE_SIZE;
-    if(nStop>imageLength){
-      nStop= imageLength
-    }
-    image.copy(aData,1,nStart,nStop);
-    nCnt+= nStop-nStart;
-    hidDevice.write(aData);
-  }
-}
-
 const HID_DATA_MESSAGE_SIZE2 = 1023
 function fHidSendImage2(image:Buffer){
   console.log('Send image2');
@@ -167,6 +152,42 @@ function fHidSendImage2(image:Buffer){
     image.copy(aData,1,nStart,nStop);
     nCnt+= nStop-nStart;
     hidDevice.write(aData);
+  }
+}
+
+async function fHidSendImage(image:Buffer){
+  console.log('Send image2');
+  if(deviceOutEndpoint==null){
+    console.log(`device not connected`);
+    return;
+  }
+  const imageLength = image.length;
+  const imageNumber = 0
+  // let aCmd = new Uint8Array(16);
+  let aCmd = Buffer.alloc(16);
+  // let aData = new Uint8Array(1024);
+  let aData = Buffer.alloc(1024);
+  aCmd[0]=1;
+  aCmd[1] = 0xff & imageNumber;
+  aCmd[2] = 0xff & (imageNumber >> 8);
+  aCmd[4]=0xff & imageLength;
+  aCmd[5]=0xff & (imageLength >> 8);
+  aCmd[6]=0xff & (imageLength >> 16);
+  aCmd[7]=0xff & (imageLength >> 24);
+  deviceOutEndpoint.transferType=usb.LIBUSB_TRANSFER_TYPE_INTERRUPT;
+  await deviceOutEndpoint.transfer(aCmd,(error)=>console.log(error));
+
+  aData[0]=2; // ID 2 -- copy images 
+  let nCnt=0;
+  for(let i=0;(i*HID_DATA_MESSAGE_SIZE2)< imageLength;i++){
+    let nStart = i*HID_DATA_MESSAGE_SIZE2;
+    let nStop = (i+1)*HID_DATA_MESSAGE_SIZE2;
+    if(nStop>imageLength){
+      nStop= imageLength
+    }
+    image.copy(aData,1,nStart,nStop);
+    nCnt+= nStop-nStart;
+    await deviceOutEndpoint.transfer(aData);
   }
 }
 
@@ -207,6 +228,6 @@ function fHidSendImage3(image:Buffer){
 // function fHidSendKey
 
 
-const usbManager = {fUsbManager,fHidSend,fUsbConnect,fUsbDisconnect,fHidSendImage,fHidSendImage2,fHidSendImage3};
+const usbManager = {fUsbManager,fHidSend,fUsbConnect,fUsbDisconnect,fHidSendImage,fHidSendImage2};
 
 export default usbManager;
