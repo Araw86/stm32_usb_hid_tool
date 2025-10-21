@@ -1,11 +1,13 @@
 import HID from 'node-hid'
-import {usb,findByIds, OutEndpoint } from 'usb'
+import {usb,findByIds, OutEndpoint, InEndpoint,Interface } from 'usb'
 import {store} from './store/mainStore'
 import { deviceIsConnected, deviceIsDisconnected } from '../shared/redux/slices/testSlice';
 
 
 let hidDevice : any | null; 
+let device: null | usb.Device
 let deviceOutEndpoint:null|OutEndpoint;
+let deviceInterface:null|Interface;
 const TARGET_VID = 1155;
 const TARGET_PID = 22288;
 
@@ -66,13 +68,17 @@ async function fUsbConnect(){
   // let sPath = findDevicePath(hidDevices,22288,1155,2);
   // hidDevice = await HID.HIDAsync.open(sPath);
    
-  const device =findByIds(TARGET_VID,TARGET_PID);
+  device =findByIds(TARGET_VID,TARGET_PID);
   if(device){
     device.open();
-    let deviceInterface = device.interface(2);
+    device.setConfiguration(0);
+    deviceInterface = device.interface(2);
     deviceInterface.claim();
+    deviceInterface.setAltSetting(0);
     let deviceEndpoints = deviceInterface.endpoints;
-    deviceOutEndpoint = <OutEndpoint> deviceEndpoints[1]//out endpoint
+    // deviceOutEndpoint = <OutEndpoint> deviceEndpoints[1]//out endpoint
+    deviceOutEndpoint = <OutEndpoint> deviceInterface.endpoint(2)//out endpoint
+    console.log(deviceOutEndpoint)
     store.dispatch(deviceIsConnected());
   }
    
@@ -85,6 +91,11 @@ async function fUsbConnect(){
 function fUsbDisconnect(): void{
   hidDevice =null;
   deviceOutEndpoint=null;
+  
+  // deviceInterface.release();
+  deviceInterface=null;
+  device.close();
+  device =null;
   console.log('disconnected');
 }
 
@@ -174,9 +185,9 @@ async function fHidSendImage(image:Buffer){
   aCmd[5]=0xff & (imageLength >> 8);
   aCmd[6]=0xff & (imageLength >> 16);
   aCmd[7]=0xff & (imageLength >> 24);
-  deviceOutEndpoint.transferType=usb.LIBUSB_TRANSFER_TYPE_INTERRUPT;
+  console.log('Transfer cmd')
   await deviceOutEndpoint.transfer(aCmd,(error)=>console.log(error));
-
+  console.log('Transfer data')
   aData[0]=2; // ID 2 -- copy images 
   let nCnt=0;
   for(let i=0;(i*HID_DATA_MESSAGE_SIZE2)< imageLength;i++){
