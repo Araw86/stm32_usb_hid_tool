@@ -60,7 +60,7 @@ function deviceDetach(device:any){
 async function fUsbConnect(){
    /* start usb functions*/
    let hidDevices = await HID.devices();
-   let sPath = findDevicePath(hidDevices,22288,1155,2);
+   let sPath = findDevicePath(hidDevices,22288,1155,1);
    hidDevice = await HID.HIDAsync.open(sPath);
    console.log('connected');
 }
@@ -137,14 +137,13 @@ function fHidSendImage(image:Buffer){
 }
 
 const HID_DATA_MESSAGE_SIZE2 = 1023
-function fHidSendImage2(image:Buffer){
+function fHidSendImage2(image:Buffer,imageNumber:number){
   console.log('Send image2');
   if(hidDevice==null){
     console.log(`device not connected`);
     return;
   }
   const imageLength = image.length;
-  const imageNumber = 0
   let aCmd = new Uint8Array(16);
   let aData = new Uint8Array(1024);
 

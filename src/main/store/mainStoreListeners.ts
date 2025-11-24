@@ -30,7 +30,8 @@ export function createMainListeners() {
       console.log(`listImages2`);
       let aFileList= fileReader.aListImages();
       let file = fileReader.aReadFile(aFileList[0]);
-      usbManager.fHidSendImage2(file);
+      usbManager.fHidSendImage2(file,0);
+      usbManager.fHidSendImage2(file,3);
     }
   });
 
