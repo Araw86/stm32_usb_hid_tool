@@ -20,10 +20,15 @@ const electronDl = require('electron-dl');
 
 import {store} from './store/mainStore'
 
+
 import { increment } from '../shared/redux/slices/testSlice';
 import usbManager from './usbManager';
+import storeIcons from './storeIcons';
 
 electronDl();
+/*init store icon */
+storeIcons.initStoreIcons();
+
 let win: BrowserWindow | null;
 
 
@@ -214,9 +219,10 @@ let numberSend : number =0;
 /*store test */
 const render = () => {
   if (win) {
-      const { testSlice } = store.getState()
+      const { testSlice, iconStateSlice} = store.getState()
       console.log('store change: ');
       console.log(testSlice);
+      console.log(iconStateSlice);
       // if(numberSend ==0){
       //   hidDevice.write([1]);
       //   numberSend++;

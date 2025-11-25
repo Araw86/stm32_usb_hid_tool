@@ -24,7 +24,8 @@ module.exports =
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: "./database/*.json", to: path.resolve(__dirname, 'build') }
+        // { from: "./database/*.json", to: path.resolve(__dirname, 'build') },
+        { from: "./database/*", to: path.resolve(__dirname, 'build') }
       ],
     })
   ]

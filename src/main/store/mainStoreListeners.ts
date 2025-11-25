@@ -1,9 +1,11 @@
 /*redux import*/
-import { createListenerMiddleware } from '@reduxjs/toolkit';
+import { createListenerMiddleware, PayloadAction } from '@reduxjs/toolkit';
 
 import usbManager from '../usbManager';
 
-import fileReader from '../fileReader';
+import fileReader from '../imageFileReader';
+
+import storeIcons from '../storeIcons';
 /* create listener to listen for changes in store in main*/
 export function createMainListeners() {
   const listener = createListenerMiddleware();
@@ -29,9 +31,19 @@ export function createMainListeners() {
     effect: async (action,state) => {
       console.log(`listImages2`);
       let aFileList= fileReader.aListImages();
-      let file = fileReader.aReadFile(aFileList[0]);
-      usbManager.fHidSendImage2(file,0);
-      usbManager.fHidSendImage2(file,3);
+
+      const s =state.getState() as any;
+
+      const icons = s.iconStateSlice?.activeIcons ?? [];
+      if (aFileList.length==0) return;
+
+      icons.forEach((icon:string, index:number)=>{
+        if(icon!=''){
+          console.log('ListImages2 '+icon+' index '+index);
+          const file = fileReader.aReadImageFile(icon);
+          usbManager.fHidSendImage2(file,index);
+        }
+      })
     }
   });
 
@@ -44,6 +56,21 @@ export function createMainListeners() {
   //     console.log(state.getState());
   //   }
   // })
+  listener.startListening({
+    type: `iconState/setIcon`,
+    effect: async (action: PayloadAction<{ position: number; icon: string }>, listenerApi) => {
+      console.log(`activeIcons`);
+      console.log(action);
+      console.log(listenerApi);
+      // getState() is typed as unknown by default here; cast or type it to access slices
+      const s = listenerApi.getState() as any;
+      storeIcons.storeActiveIcons(s.iconStateSlice?.activeIcons ?? []);
+      const position = action.payload.position;
+      const icon = action.payload.icon;
+      const file = fileReader.aReadImageFile(icon);
+      usbManager.fHidSendImage2(file, position);
+    }
+  });
 
  return listener;
 }

@@ -1,12 +1,14 @@
-import React from "react";
-import Grid from "@mui/material/Grid2";
-import Card from "@mui/material/Card";
-import CardActionArea from "@mui/material/CardActionArea";
-import CardMedia from "@mui/material/CardMedia";
+import React, { useEffect } from 'react';
+import Grid from '@mui/material/Grid2';
+import Card from '@mui/material/Card';
+import { Box } from '@mui/material';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardMedia from '@mui/material/CardMedia';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/storeRenderer';
+import IconSelectroScreenC from './IconSelectroScreenC';
 
 type Props = {
-  images?: string[]; // up to 9 images; if fewer than 9 placeholders will be used
-  onSelect?: (index: number) => void;
   imageAlt?: string;
   gap?: number;
 };
@@ -23,38 +25,73 @@ const DEFAULT_PLACEHOLDERS = Array.from({ length: 9 }).map(
  * <IconScreenComponent images={[...9 urls...]} onSelect={(i)=>console.log(i)} />
  */
 export default function IconScreenComponent({
-  images = DEFAULT_PLACEHOLDERS,
-  onSelect,
-  imageAlt = "icon",
+  imageAlt = 'icon',
   gap = 2,
 }: Props) {
   // Ensure there are exactly 9 items to render
-  const items = [...images].slice(0, 9);
-  while (items.length < 9)
-  {
+  let items = [];
+  const aImages: string[] = useSelector(
+    (state: RootState) => state.iconStateSlice.activeIcons
+  );
+  const aAllImages: string[] = useSelector(
+    (state: RootState) => state.iconStateSlice.allIcons
+  );
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openDialogId, setOpenDialogId] = React.useState<number>(-1);
+  console.log('image array');
+  console.log(aImages);
+  while (items.length < 9) {
     items.push(DEFAULT_PLACEHOLDERS[items.length]);
   }
+  items = items.map((item, index) => {
+    if (aImages[index] != '') {
+      return '../database/' + aImages[index];
+    } else {
+      return item;
+    }
+  });
+  console.log(items);
+  const fOnClick = (index: number) => {
+    console.log('on click');
+    setOpenDialogId(index);
+    setOpenDialog(true);
+  };
+
+  const fOnClose = () => {
+    console.log('on close');
+    setOpenDialog(false);
+  };
+
   return (
-    <Grid container spacing={gap}>
-      {items.map((src, idx) => (
-        <Grid size={4}  key={idx}>
-          <Card>
-            <CardActionArea onClick={() => onSelect?.(idx)}>
-              <CardMedia
-                component="img"
-                image={src}
-                alt={`${imageAlt}-${idx}`}
-                sx={{
-                  width: "100%",
-                  height: 0,
-                  paddingBottom: "100%", // keep square aspect ratio
-                  objectFit: "cover",
-                }}
-              />
-            </CardActionArea>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+    <Box>
+      <Grid container spacing={gap}>
+        {items.map((src, idx) => (
+          <Grid size={4} key={idx}>
+            <Card>
+              <CardActionArea onClick={() => fOnClick(idx)}>
+                <CardMedia
+                  component="img"
+                  image={src}
+                  alt={`${imageAlt}-${idx}`}
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    // paddingBottom: '100%', // keep square aspect ratio
+                    objectFit: 'cover',
+                  }}
+                />
+              </CardActionArea>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+      <IconSelectroScreenC
+        images={aAllImages}
+        open={openDialog}
+        onClose={() => fOnClose()}
+        index={openDialogId}
+      />
+    </Box>
   );
 }
