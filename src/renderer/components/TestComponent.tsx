@@ -19,16 +19,7 @@ function TestComponent() {
   const versionNode = window.versions?.chrome(); //
   return (
     <Box>
-      <Box>TestComponent {testStateValue}</Box>
-      <Box>node {versionNode}</Box>
       <Box>
-        <Button
-          onClick={() => {
-            store.dispatch(increment());
-          }}
-        >
-          Increment
-        </Button>
         <Button
           onClick={() => {
             store.dispatch(listImages2());
