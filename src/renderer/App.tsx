@@ -17,6 +17,7 @@ import '@fontsource/roboto/700.css';
 import { Box } from '@mui/material';
 import TestComponent from './components/TestComponent';
 import IconScreenComponent from './components/IconScreenComponent';
+import KeyboardLayout from './components/keyboard_layout/KeyboardLayout';
 
 // import AppWindows from "./components/AppWindows";
 
@@ -44,7 +45,8 @@ export default function App(): JSX.Element {
         {/* <AppWindows /> */}
         <Box>test</Box>
         <TestComponent />
-        <IconScreenComponent/>
+        <KeyboardLayout />
+        <IconScreenComponent />
       </Provider>
     </ThemeProvider>
   );
