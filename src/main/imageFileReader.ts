@@ -24,7 +24,7 @@ function aListImages(){
   return files;
 }
 
-function  aReadFile(sFileName:string){
+function  aReadImageFile(sFileName:string){
   console.log('Read file')
   let aFileContent 
   const filePath = path.join(sAppPath,sFileName);
@@ -36,6 +36,6 @@ function  aReadFile(sFileName:string){
 
 
 
-const fileReader = {aListImages,aReadFile};
+const fileReader = {aListImages,aReadImageFile};
 
 export default fileReader;

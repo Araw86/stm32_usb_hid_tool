@@ -32,29 +32,23 @@ const testSlice = createSlice({
     increment(slice,action: PayloadAction<null>){
       slice.testState1=slice.testState1+1;
     },
-    connect(slice,action:PayloadAction<null>){
-      slice.connect=true;
-    },
-    disconnect(slice,action:PayloadAction<null>){
-      slice.disconnect=true;
-    },
     send(slice,action:PayloadAction<null>){
       slice.send=true;
-    },
-    listImages(slice,action:PayloadAction<null>){
-      slice.listImages=true;
     },
     listImages2(slice,action:PayloadAction<null>){
       slice.listImages2=true;
     },
-    listImages3(slice,action:PayloadAction<null>){
-      slice.listImages3=true;
+    deviceIsConnected(slice,action:PayloadAction<null>){
+      slice.connectState =true;
     },
+    deviceIsDisconnected(slice,action:PayloadAction<null>){
+      slice.connectState =false;
+    }
 
   }
 });
 
 /*export dispatch functions */
-export const { increment,connect,disconnect,send, listImages,listImages2,listImages3 } = testSlice.actions;
+export const { increment,send, listImages2,deviceIsConnected,deviceIsDisconnected } = testSlice.actions;
 /* export reducer */
 export default testSlice.reducer;

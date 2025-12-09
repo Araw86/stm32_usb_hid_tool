@@ -1,0 +1,21 @@
+{
+  "busNumber": 1,
+  "deviceAddress": 3,
+  "deviceDescriptor": {
+    "bLength": 18,
+    "bDescriptorType": 1,
+    "bcdUSB": 512,
+    "bDeviceClass": 239,
+    "bDeviceSubClass": 2,
+    "bDeviceProtocol": 1,
+    "bMaxPacketSize0": 64,
+    "idVendor": 1155,
+    "idProduct": 22288,
+    "bcdDevice": 512,
+    "iManufacturer": 1,
+    "iProduct": 2,
+    "iSerialNumber": 3,
+    "bNumConfigurations": 1
+  },
+  "portNumbers": [2]
+}

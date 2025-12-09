@@ -13,6 +13,8 @@ const middleware = applyMiddleware(createMainListeners().middleware)
 
 const enhancer: StoreEnhancer = composeWithStateSync(middleware)
 
+console.log("Redux Store init")
+
 export const store = configureStore({
   reducer:reducers, 
   enhancers: (getDefaultEnhancers) =>
