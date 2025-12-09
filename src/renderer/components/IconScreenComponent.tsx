@@ -64,7 +64,7 @@ export default function IconScreenComponent({
   };
 
   return (
-    <Box>
+    <Box width={200}>
       <Grid container spacing={gap}>
         {items.map((src, idx) => (
           <Grid size={4} key={idx}>

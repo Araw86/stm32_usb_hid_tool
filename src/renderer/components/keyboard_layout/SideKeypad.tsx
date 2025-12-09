@@ -6,16 +6,27 @@ interface SideKeypadProps {
 }
 
 const navLayout: (string | null)[][] = [
+  ['Print', 'Scroll', 'Pause'],
   ['Insert', 'Home', 'PgUp'],
   ['Delete', 'End', 'PgDn'],
 ];
 
 const arrowLayout: (string | null)[][] = [
+  [null, null, null],
   [null, 'ArrowUp', null],
   ['ArrowLeft', 'ArrowDown', 'ArrowRight'],
 ];
 
 const numpadLayout: (string | null)[][] = [
+  ['FnA', 'FnB', 'FnC', 'FnD'],
+  ['NumLock', '/', '*', '-'],
+  ['7', '8', '9', '+'],
+  ['4', '5', '6', '+'],
+  ['1', '2', '3', 'Enter'],
+  ['0', null, '.', 'Enter'],
+];
+
+const additionalLayout: (string | null)[][] = [
   ['NumLock', '/', '*', '-'],
   ['7', '8', '9', '+'],
   ['4', '5', '6', '+'],

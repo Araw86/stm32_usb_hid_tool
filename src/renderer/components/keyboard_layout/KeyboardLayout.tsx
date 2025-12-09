@@ -1,6 +1,6 @@
 import React from 'react';
 // import Keyboard from './Keyboard';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import KeyboardContainer from './KeyboardContainer';
 
 type Props = {};
@@ -16,19 +16,53 @@ const components = [
 //   .fill(null)
 //   .map((_, i) => <Typography>{`Key ${i + 1}`}</Typography>);
 
-const mainKeys = Array(70)
+const mainKeys = Array(74)
   .fill(null)
-  .map((_, i) => <Typography>{`M${i + 1}`}</Typography>);
-const sideKeys = Array(40)
+  .map((_, i) => (
+    <Box>
+      <Typography>{`K${i + 1}`}</Typography>
+      <Typography fontSize={'0.500rem'}>{`K${i + 1}`}</Typography>
+      <Typography fontSize={'0.500rem'}>{`K${i + 1}`}</Typography>
+    </Box>
+  ));
+const navKeys = Array(13)
   .fill(null)
-  .map((_, i) => <Typography>{`S${i + 1}`}</Typography>);
+  .map((_, i) => (
+    <Box>
+      <Typography>{`A${i + 1}`}</Typography>
+      <Typography fontSize={'0.500rem'}>{`A${i + 1}`}</Typography>
+      <Typography fontSize={'0.500rem'}>{`A${i + 1}`}</Typography>
+    </Box>
+  ));
+
+const numKeys = Array(21)
+  .fill(null)
+  .map((_, i) => (
+    <Box>
+      <Typography>{`N${i + 1}`}</Typography>
+      <Typography fontSize={'0.500rem'}>{`N${i + 1}`}</Typography>
+      <Typography fontSize={'0.500rem'}>{`N${i + 1}`}</Typography>
+    </Box>
+  ));
+
+const addKeys = Array(6)
+  .fill(null)
+  .map((_, i) => (
+    <Box>
+      <Typography>{`S${i + 1}`}</Typography>
+      <Typography fontSize={'0.500rem'}>{`S${i + 1}`}</Typography>
+      <Typography fontSize={'0.500rem'}>{`S${i + 1}`}</Typography>
+    </Box>
+  ));
 
 const KeyboardLayout = (props: Props) => {
   return (
     <div style={{ padding: 20 }}>
       <KeyboardContainer
         mainKeyComponents={mainKeys}
-        sideKeyComponents={sideKeys}
+        navKeyComponents={navKeys}
+        numKeyComponents={numKeys}
+        addKeyComponents={addKeys}
       />
     </div>
   );

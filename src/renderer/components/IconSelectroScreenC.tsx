@@ -62,7 +62,7 @@ const IconSelectroScreenC: React.FC<Props> = ({
   }, [openProp, index]);
 
   return (
-    <Dialog fullScreen open={openDialog} onClose={handleClose}>
+    <Dialog open={openDialog} onClose={handleClose}>
       <AppBar position="sticky">
         <Toolbar>
           <Typography variant="h6" sx={{ flex: 1 }}>

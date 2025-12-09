@@ -1,34 +1,12 @@
 import React from 'react';
 import { Box, SxProps, Theme } from '@mui/material';
+import { KEY_MIN_WIDTH, KEY_HEIGHT } from './keyboardConstants';
 
-interface KeyboardComponentProps {
+interface KeyboardGridComponent {
   keyComponents: React.ReactNode[];
+  keyLayout: (string | null)[][];
+  keySpanMap: Record<string, number>;
 }
-
-const navLayout: (string | null)[][] = [
-  ['Print', 'Scroll', 'Pause'],
-  ['Insert', 'Home', 'PgUp'],
-  ['Delete', 'End', 'PgDn'],
-];
-
-const arrowLayout: (string | null)[][] = [
-  [null, null, null],
-  [null, 'ArrowUp', null],
-  ['ArrowLeft', 'ArrowDown', 'ArrowRight'],
-];
-
-const numpadLayout: (string | null)[][] = [
-  ['NumLock', '/', '*', '-'],
-  ['7', '8', '9', '+'],
-  ['4', '5', '6', '+'],
-  ['1', '2', '3', 'Enter'],
-  ['0', null, '.', 'Enter'],
-];
-
-const keySpanMap: Record<string, number> = {
-  Enter: 2,
-  '0': 2,
-};
 
 const defaultKeySpan = 1;
 
@@ -39,23 +17,21 @@ const keyBoxSx: SxProps<Theme> = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: '0.875rem',
+  // fontSize: '0.875rem',
   userSelect: 'none',
   cursor: 'default',
-  height: 40,
+  height: KEY_HEIGHT,
   margin: 0.3,
   boxSizing: 'border-box',
+  minWidth: KEY_MIN_WIDTH,
 };
 
-const KeyboardComponent: React.FC<KeyboardComponentProps> = ({
+const KeyboardGridComponent: React.FC<KeyboardGridComponent> = ({
   keyComponents,
+  keyLayout,
+  keySpanMap,
 }) => {
-  // Count total keys in nav + arrow + numpad layouts
-  const totalKeys =
-    navLayout.reduce((acc, row) => acc + row.length, 0) +
-    arrowLayout.reduce((acc, row) => acc + row.length, 0) +
-    numpadLayout.reduce((acc, row) => acc + row.length, 0);
-
+  const totalKeys = keyLayout.reduce((acc, row) => acc + row.length, 0);
   const components = [...keyComponents];
   while (components.length < totalKeys) {
     components.push(null);
@@ -88,7 +64,27 @@ const KeyboardComponent: React.FC<KeyboardComponentProps> = ({
                 sx={{
                   ...keyBoxSx,
                   gridColumn: key ? `span ${span}` : undefined,
-                  backgroundColor: key ? '#80cbc4' : 'transparent',
+                  gridRowStart:
+                    key && ['EnderN', '+N'].includes(key) ? rowIndex : `auto`,
+                  gridRowEnd:
+                    key && ['EnderN', '+N'].includes(key)
+                      ? rowIndex + 1
+                      : `auto`,
+                  backgroundColor:
+                    key &&
+                    [
+                      'Esc',
+                      'Enter',
+                      'Shift',
+                      'Backspace',
+                      'Caps',
+                      'Space',
+                      'Ctrl',
+                      'Win',
+                      'Alt',
+                    ].includes(key)
+                      ? '#80cbc4'
+                      : '#e0f2f1',
                   visibility: key ? 'visible' : 'hidden',
                 }}
               >
@@ -111,15 +107,9 @@ const KeyboardComponent: React.FC<KeyboardComponentProps> = ({
       }}
     >
       {/* Navigation cluster */}
-      {renderGrid(navLayout, 0)}
-
-      {/* Arrow keys */}
-      {renderGrid(arrowLayout, 100)}
-
-      {/* Numpad */}
-      {renderGrid(numpadLayout, 200)}
+      {renderGrid(keyLayout, 0)}
     </Box>
   );
 };
 
-export default KeyboardComponent;
+export default KeyboardGridComponent;
