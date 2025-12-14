@@ -63,6 +63,9 @@ async function fUsbConnect(){
    let sPath = findDevicePath(hidDevices,22288,1155,1);
    hidDevice = await HID.HIDAsync.open(sPath);
    console.log('connected');
+   hidDevice.on("error",fHidError);
+   hidDevice.on("data",fHidReceiveData);
+  
 }
 
 function fUsbDisconnect(): void{
@@ -201,6 +204,15 @@ function fHidSendImage3(image:Buffer){
     nCnt+= nStop-nStart;
     hidDevice.write(aData);
   }
+}
+
+function fHidReceiveData(aData:any[]){
+  console.log("received " );
+  console.log(aData);
+}
+
+function fHidError(error:any){
+  console.log(error);
 }
 
 // function fHidSendKey
