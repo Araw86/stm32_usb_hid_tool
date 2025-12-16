@@ -1,6 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 
+export interface IconPageInterface {
+  nPageId: number;
+  sPageName: string;
+  bIsRootPage: boolean;
+  aIcons: number[];
+}
+
+export interface IconInterface {
+  nIconId: number;
+  sIconName: string;
+  sIconImagePath: string;
+  bIconIsBack: boolean;
+  nLinkedPageId: number;
+  sIconProgramPath: string;
+}
+
 export interface IconStateInterface {
   activeIcons: string[]|null;
   allIcons: string[]|null;

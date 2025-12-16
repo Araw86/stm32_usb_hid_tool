@@ -1,7 +1,5 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import MainKeyboard from './MainKeyboard';
-import SideKeypad from './SideKeypad';
 import { Key } from '@mui/icons-material';
 import KeyboardGridNumComponent from './KeyboardNumGridComponent';
 import KeyboardGridComponent from './KeyboardGridComponent';
