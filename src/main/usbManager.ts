@@ -2,6 +2,8 @@ import HID from 'node-hid'
 import {usb,findByIds } from 'usb'
 import {store} from './store/mainStore'
 import { deviceIsConnected, deviceIsDisconnected } from '../shared/redux/slices/testSlice';
+import {setAllKeyTreshold, setKeyTreshold, setKeyAnalogState} from '../shared/redux/slices/keyboardKeysStateSlice';
+import { KEYBOARD_KEYS_LENGTH, SCREEN_BUTTONS } from '../shared/config/imageArrayConf';
 
 
 let hidDevice : any | null; 
@@ -208,7 +210,26 @@ function fHidSendImage3(image:Buffer){
 
 function fHidReceiveData(aData:any[]){
   console.log("received " );
-  console.log(aData);
+  switch(aData[0]){
+    case 3:
+      let aKeyAnalogValue = new Uint16Array(KEYBOARD_KEYS_LENGTH);
+      for(let i=0;i<KEYBOARD_KEYS_LENGTH;i++){
+        aKeyAnalogValue[i]=aData[2*i+1]+(aData[2*i+2]<<8);
+      }
+      store.dispatch(setKeyAnalogState(Array.from(aKeyAnalogValue)));
+      break;
+      case 4:
+        let aBtnPress = new Uint8Array(SCREEN_BUTTONS);
+        for(let i=0;i<SCREEN_BUTTONS;i++){
+          aBtnPress[i]=aData[i+1];
+        }
+        //todo add dispatch to iconStateSlice, function is missing
+        console.log("screen buttons" + aBtnPress);
+        break;
+      default:
+        console.log('Unknown data received');
+  }
+  // console.log(aData);
 }
 
 function fHidError(error:any){

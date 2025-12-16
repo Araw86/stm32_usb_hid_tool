@@ -6,7 +6,7 @@ import { store } from './store/mainStore';
 
 import { setActiveIcons, setAllIcons } from '../shared/redux/slices/iconStateSlice';
 
-import { IMAGE_ARRAY_LENGTH } from './config/imageArrayConf';
+import { IMAGE_ARRAY_LENGTH } from '../shared/config/imageArrayConf';
 
 import { app } from "electron";
 import path from "path";

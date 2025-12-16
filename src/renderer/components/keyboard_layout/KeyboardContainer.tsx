@@ -51,7 +51,7 @@ const mainKeyLayout: (string | null)[][] = [
   ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
   ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
   ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift'],
-  ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Fn', 'Code', 'Ctrl'],
+  ['CtrlL', 'Win', 'Alt', 'Space', 'Alt2', 'Fn', 'Code', 'Ctrl2'],
 ];
 
 const mainKeySpanMap: Record<string, number> = {
@@ -79,11 +79,11 @@ const navLayout: (string | null)[][] = [
 
 const numpadLayout: (string | null)[][] = [
   ['FnA', 'FnB', 'FnC', 'FnD'],
-  ['NumLock', '/', '*', '-'],
-  ['7', '8', '9', '+N'],
-  ['4', '5', '6'],
-  ['1', '2', '3', 'EnterN'],
-  ['0', '.'],
+  ['NumLock', '/N', '*N', '-N'],
+  ['7N', '8N', '9N', '+N'],
+  ['4N', '5N', '6N'],
+  ['1N', '2N', '3N', 'EnterN'],
+  ['0N', '.N'],
 ];
 
 const additionalLayout: (string | null)[][] = [
