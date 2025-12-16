@@ -5,13 +5,8 @@ import SideKeypad from './SideKeypad';
 import { Key } from '@mui/icons-material';
 import KeyboardGridNumComponent from './KeyboardNumGridComponent';
 import KeyboardGridComponent from './KeyboardGridComponent';
-
-interface KeyboardContainerProps {
-  mainKeyComponents: React.ReactNode[];
-  navKeyComponents: React.ReactNode[];
-  numKeyComponents: React.ReactNode[];
-  addKeyComponents: React.ReactNode[];
-}
+import KeyboardKeyContainer from './KeyboardKeyContainer';
+interface KeyboardContainerProps {}
 
 const mainKeyLayout: (string | null)[][] = [
   [
@@ -50,8 +45,8 @@ const mainKeyLayout: (string | null)[][] = [
   ],
   ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
   ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
-  ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift'],
-  ['CtrlL', 'Win', 'Alt', 'Space', 'Alt2', 'Fn', 'Code', 'Ctrl2'],
+  ['ShiftL', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'ShiftR'],
+  ['CtrlL', 'Win', 'AltL', 'Space', 'AltR', 'Fn', 'Code', 'CtrlR'],
 ];
 
 const mainKeySpanMap: Record<string, number> = {
@@ -59,19 +54,22 @@ const mainKeySpanMap: Record<string, number> = {
   Tab: 1.5,
   Caps: 1.75,
   Enter: 2.25,
-  Shift: 2.25,
+  ShiftL: 2.25,
+  ShiftR: 2.75,
   Space: 5.9,
-  Ctrl: 1.5,
+  CtrlL: 1.5,
+  CtrlR: 1.5,
   Win: 1.5,
-  Alt: 1.5,
+  AltL: 1.5,
+  AltR: 1.5,
   Fn: 1.5,
   Code: 1.5,
 };
 
 const navLayout: (string | null)[][] = [
   ['Print', 'Scroll', 'Pause'],
-  ['Insert', 'Home', 'PgUp'],
-  ['Delete', 'End', 'PgDn'],
+  ['Insert', 'Home', 'PageUp'],
+  ['Delete', 'End', 'PageDown'],
   [null, null, null],
   [null, 'ArrowUp', null],
   ['ArrowLeft', 'ArrowDown', 'ArrowRight'],
@@ -100,31 +98,22 @@ const sideKeySpanMap: Record<string, number> = {
   '0': 1.9,
 };
 
-const KeyboardContainer: React.FC<KeyboardContainerProps> = ({
-  mainKeyComponents,
-  navKeyComponents,
-  numKeyComponents,
-  addKeyComponents,
-}) => {
+const KeyboardContainer: React.FC<KeyboardContainerProps> = () => {
   return (
     <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
       <KeyboardGridComponent
-        keyComponents={mainKeyComponents}
         keyLayout={mainKeyLayout}
         keySpanMap={mainKeySpanMap}
       />
       <KeyboardGridComponent
-        keyComponents={navKeyComponents}
         keyLayout={navLayout}
         keySpanMap={sideKeySpanMap}
       />
       <KeyboardGridNumComponent
-        keyComponents={numKeyComponents}
         keyLayout={numpadLayout}
         keySpanMap={sideKeySpanMap}
       />
       <KeyboardGridComponent
-        keyComponents={addKeyComponents}
         keyLayout={additionalLayout}
         keySpanMap={sideKeySpanMap}
       />

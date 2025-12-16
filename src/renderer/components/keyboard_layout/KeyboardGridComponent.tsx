@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, SxProps, Theme } from '@mui/material';
 import { KEY_MIN_WIDTH, KEY_HEIGHT } from './keyboardConstants';
+import KeyboardKeyContainer from './KeyboardKeyContainer';
 
 interface KeyboardGridComponent {
-  keyComponents: React.ReactNode[];
   keyLayout: (string | null)[][];
   keySpanMap: Record<string, number>;
 }
@@ -11,9 +11,7 @@ interface KeyboardGridComponent {
 const defaultKeySpan = 1;
 
 const keyBoxSx: SxProps<Theme> = {
-  border: '1px solid #ccc',
   borderRadius: 1,
-  backgroundColor: '#e0f2f1',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -27,15 +25,14 @@ const keyBoxSx: SxProps<Theme> = {
 };
 
 const KeyboardGridComponent: React.FC<KeyboardGridComponent> = ({
-  keyComponents,
   keyLayout,
   keySpanMap,
 }) => {
   const totalKeys = keyLayout.reduce((acc, row) => acc + row.length, 0);
-  const components = [...keyComponents];
-  while (components.length < totalKeys) {
-    components.push(null);
-  }
+  // const components = [...keyComponents];
+  // while (components.length < totalKeys) {
+  //   components.push(null);
+  // }
 
   let compIndex = 0;
 
@@ -56,7 +53,8 @@ const KeyboardGridComponent: React.FC<KeyboardGridComponent> = ({
         >
           {row.map((key, keyIndex) => {
             const span = keySpanMap[key ?? ''] ?? defaultKeySpan;
-            const content = key ? components[compIndex++] : null;
+            const Component = KeyboardKeyContainer;
+            const content = key ? <Component sKeyboardKey={key} /> : null;
 
             return (
               <Box
@@ -70,8 +68,9 @@ const KeyboardGridComponent: React.FC<KeyboardGridComponent> = ({
                     key && ['EnderN', '+N'].includes(key)
                       ? rowIndex + 1
                       : `auto`,
-                  backgroundColor:
-                    key &&
+                  border:
+                    '2px solid ' +
+                    (key &&
                     [
                       'Esc',
                       'Enter',
@@ -84,7 +83,8 @@ const KeyboardGridComponent: React.FC<KeyboardGridComponent> = ({
                       'Alt',
                     ].includes(key)
                       ? '#80cbc4'
-                      : '#e0f2f1',
+                      : '#e0f2f1'),
+
                   visibility: key ? 'visible' : 'hidden',
                 }}
               >
