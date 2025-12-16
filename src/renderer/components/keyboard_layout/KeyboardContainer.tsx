@@ -100,7 +100,7 @@ const sideKeySpanMap: Record<string, number> = {
 
 const KeyboardContainer: React.FC<KeyboardContainerProps> = () => {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+    <Box sx={{ display: 'flex', alignItems: 'flex-start', padding: '20px' }}>
       <KeyboardGridComponent
         keyLayout={mainKeyLayout}
         keySpanMap={mainKeySpanMap}
@@ -117,8 +117,6 @@ const KeyboardContainer: React.FC<KeyboardContainerProps> = () => {
         keyLayout={additionalLayout}
         keySpanMap={sideKeySpanMap}
       />
-      {/* <MainKeyboard keyComponents={mainKeyComponents} /> */}
-      {/* <SideKeypad keyComponents={sideKeyComponents} /> */}
     </Box>
   );
 };

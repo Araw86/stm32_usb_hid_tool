@@ -18,6 +18,7 @@ import { Box } from '@mui/material';
 import TestComponent from './components/TestComponent';
 import IconScreenComponent from './components/IconScreenComponent';
 import KeyboardLayout from './components/keyboard_layout/KeyboardLayout';
+import KeyboardContainer from './components/keyboard_layout/KeyboardContainer';
 
 // import AppWindows from "./components/AppWindows";
 
@@ -45,7 +46,7 @@ export default function App(): JSX.Element {
         {/* <AppWindows /> */}
         <Box>test</Box>
         <TestComponent />
-        <KeyboardLayout />
+        <KeyboardContainer />
         <IconScreenComponent />
       </Provider>
     </ThemeProvider>

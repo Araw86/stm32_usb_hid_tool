@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Grid from '@mui/material/Grid2';
 import Card from '@mui/material/Card';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
 import { useSelector } from 'react-redux';
@@ -65,6 +65,7 @@ export default function IconScreenComponent({
 
   return (
     <Box width={200}>
+      <Typography>Icon selection</Typography>
       <Grid container spacing={gap}>
         {items.map((src, idx) => (
           <Grid size={4} key={idx}>
