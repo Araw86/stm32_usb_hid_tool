@@ -220,9 +220,9 @@ let numberSend : number =0;
 const render = () => {
   if (win) {
       const { testSlice, iconStateSlice} = store.getState()
-      console.log('store change: ');
-      console.log(testSlice);
-      console.log(iconStateSlice);
+      // console.log('store change: ');
+      // console.log(testSlice);
+      // console.log(iconStateSlice);
       // if(numberSend ==0){
       //   hidDevice.write([1]);
       //   numberSend++;

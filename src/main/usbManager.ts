@@ -209,7 +209,7 @@ function fHidSendImage3(image:Buffer){
 }
 
 function fHidReceiveData(aData:any[]){
-  console.log("received " );
+  // console.log("received " );
   switch(aData[0]){
     case 3:
       let aKeyAnalogValue = new Uint16Array(KEYBOARD_KEYS_LENGTH);
@@ -224,7 +224,7 @@ function fHidReceiveData(aData:any[]){
           aBtnPress[i]=aData[i+1];
         }
         //todo add dispatch to iconStateSlice, function is missing
-        console.log("screen buttons" + aBtnPress);
+        // console.log("screen buttons" + aBtnPress);
         break;
       default:
         console.log('Unknown data received');
