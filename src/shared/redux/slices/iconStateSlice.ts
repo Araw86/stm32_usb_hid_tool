@@ -8,6 +8,10 @@ export interface IconPageInterface {
   aIcons: number[];
 }
 
+export interface IconPageObjectInterface {
+    [key: number]: IconPageInterface;
+}
+
 export interface IconInterface {
   nIconId: number;
   sIconName: string;
@@ -17,15 +21,28 @@ export interface IconInterface {
   sIconProgramPath: string;
 }
 
+export interface IkonObjectInterface {
+    [key: number]: IconInterface;
+}
+
 export interface IconStateInterface {
   activeIcons: string[]|null;
   allIcons: string[]|null;
+
+  nActivePageId:number;
+  oIconPages: IconPageObjectInterface;
+  oIcons: IkonObjectInterface;
 }
 
 
 const initialState: IconStateInterface = {
+  /*old*/
   activeIcons: null,
-  allIcons: null
+  allIcons: null,
+/*new*/
+  nActivePageId:0,
+  oIconPages:{} as IconPageObjectInterface,
+  oIcons:{} as IkonObjectInterface
 }
 
 
