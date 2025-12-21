@@ -6,6 +6,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/storeRenderer';
+import IconSetupMenuC from './IconSetupMenuC';
 
 type Props = {
   imageAlt?: string;
@@ -32,7 +33,18 @@ export default function IconPageSetupViewC({
     (state: RootState) => state.iconStateSlice.oIconPages[nActiveConfigPageId]
   );
   const oIcons = useSelector((state: RootState) => state.iconStateSlice.oIcons);
+  const [bDialogOpen, setBDialogOpen] = React.useState<boolean>(false);
 
+  const [nOpenDialogPos, setOpenDialogPos] = React.useState<number>(-1);
+  const fHandleDialogClose = () => {
+    setBDialogOpen(false);
+  };
+
+  const fHandleSelect = (index: number) => {
+    console.log('fHandleSelect ' + index);
+    setOpenDialogPos(index);
+    setBDialogOpen(true);
+  };
   console.log('setup page object');
   console.log(oIconPage);
   const items = oIconPage.aIcons.map((item, index) => {
@@ -51,7 +63,7 @@ export default function IconPageSetupViewC({
         {items.map((src, idx) => (
           <Grid size={4} key={idx}>
             <Card>
-              <CardActionArea>
+              <CardActionArea onClick={() => fHandleSelect(idx)}>
                 <CardMedia
                   component="img"
                   image={src}
@@ -67,6 +79,11 @@ export default function IconPageSetupViewC({
           </Grid>
         ))}
       </Grid>
+      <IconSetupMenuC
+        open={bDialogOpen}
+        onClose={fHandleDialogClose}
+        nItemPos={nOpenDialogPos}
+      />
     </Box>
   );
 }

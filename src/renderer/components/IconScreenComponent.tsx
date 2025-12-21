@@ -6,7 +6,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/storeRenderer';
-import IconSelectroScreenC from './IconSelectroScreenC';
+import IconSelectroScreenC from './icon_view_setup/IconSelectroScreenC';
 
 type Props = {
   imageAlt?: string;
@@ -87,12 +87,12 @@ export default function IconScreenComponent({
           </Grid>
         ))}
       </Grid>
-      <IconSelectroScreenC
+      {/* <IconSelectroScreenC
         images={aAllImages}
         open={openDialog}
         onClose={() => fOnClose()}
         index={openDialogId}
-      />
+      /> */}
     </Box>
   );
 }

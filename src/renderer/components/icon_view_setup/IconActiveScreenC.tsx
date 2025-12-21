@@ -32,9 +32,14 @@ export default function IconActiveScreenC({
     (state: RootState) => state.iconStateSlice.oIconPages[nActivePageId]
   );
   const oIcons = useSelector((state: RootState) => state.iconStateSlice.oIcons);
+  const oIconPages = useSelector(
+    (state: RootState) => state.iconStateSlice.oIconPages
+  );
 
   console.log('page object');
   console.log(oIconPage);
+  console.log(oIconPages);
+  console.log(oIcons);
   const items = oIconPage.aIcons.map((item, index) => {
     if (oIcons[item] && oIcons[item].sIconImagePath != '') {
       return '../database/' + oIcons[item].sIconImagePath;

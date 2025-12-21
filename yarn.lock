@@ -574,6 +574,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mui/lab@npm:^7.0.1-beta.20":
+  version: 7.0.1-beta.20
+  resolution: "@mui/lab@npm:7.0.1-beta.20"
+  dependencies:
+    "@babel/runtime": ^7.28.4
+    "@mui/system": ^7.3.6
+    "@mui/types": ^7.4.9
+    "@mui/utils": ^7.3.6
+    clsx: ^2.1.1
+    prop-types: ^15.8.1
+  peerDependencies:
+    "@emotion/react": ^11.5.0
+    "@emotion/styled": ^11.3.0
+    "@mui/material": ^7.3.6
+    "@mui/material-pigment-css": ^7.3.6
+    "@types/react": ^17.0.0 || ^18.0.0 || ^19.0.0
+    react: ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/react":
+      optional: true
+    "@emotion/styled":
+      optional: true
+    "@mui/material-pigment-css":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: e9ed4e30b6f537ddcc30e7e6cc719b677a8acef74ebb6704caf24f1dbacacb4920d97f27b601f8098a488df08b4a72b9d6668c4fc35036e38300dcd50f95e028
+  languageName: node
+  linkType: hard
+
 "@mui/material@npm:^7.3.6":
   version: 7.3.6
   resolution: "@mui/material@npm:7.3.6"
@@ -6162,6 +6193,7 @@ __metadata:
     "@emotion/styled": ^11.14.1
     "@fontsource/roboto": ^4.5.8
     "@mui/icons-material": ^6.1.9
+    "@mui/lab": ^7.0.1-beta.20
     "@mui/material": ^7.3.6
     "@mui/x-tree-view": ^8.22.0
     "@reduxjs/toolkit": ^2.5.1

@@ -61,8 +61,8 @@ const initialState: IconStateInterface = {
   oIconPages:{0:{sPageName:"Root",bIsRootPage:true,aIcons:[0,0,0,0,0,0,0,0,0],aPages:[]}} as IconPageObjectInterface,
   oIcons:{} as IkonObjectInterface,
 
-  nIdPageGenerator:0,
-  nIdIconGenerator:0,
+  nIdPageGenerator:1,
+  nIdIconGenerator:1,
   nPageChangeCounter:0,
 }
 
@@ -111,13 +111,14 @@ const iconStateSlice = createSlice({
       }
       if(payload.bLinkedPage){
         const nNewPageId=generatePageId();
+        slice.oIconPages[nActiveConfigPageId].aPages.push(nNewPageId);
         slice.oIconPages[nNewPageId]={
           sPageName: payload.sIconName,
           bIsRootPage: false,
           aIcons: [0,0,0,0,0,0,0,0,0],
           aPages: [],
         }
-        slice.oIcons[nNewIconId].nLinkedPageId=nNewPageId;
+        slice.nPageChangeCounter++;
         /* back icon */
         const nBackIconId=generateIconId();
         slice.oIcons[nBackIconId]={
@@ -128,6 +129,7 @@ const iconStateSlice = createSlice({
           bIconIsBack: true,
         };
         slice.oIconPages[nNewPageId].aIcons[0]=nBackIconId;
+        slice.oIconPages
 
       }
       function generatePageId(){
@@ -148,6 +150,7 @@ const iconStateSlice = createSlice({
       const nLinkedPageId = oIcon.nLinkedPageId;
 
       if(nLinkedPageId!=0){
+        slice.nPageChangeCounter++;
         removePage(nLinkedPageId);
       }else{
         removeIcon(nIconId)

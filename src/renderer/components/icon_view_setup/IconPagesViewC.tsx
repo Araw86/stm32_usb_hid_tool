@@ -24,7 +24,7 @@ const IconPagesViewC = (props: Props) => {
 
   const treeItems: TreeViewBaseItem[] = React.useMemo(
     () => generateTreeItems(),
-    [oIconPages]
+    [oIconPages, nPageChangeCounter]
   );
 
   function generateTreeItems() {
