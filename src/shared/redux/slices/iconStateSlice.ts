@@ -118,12 +118,14 @@ const iconStateSlice = createSlice({
           aIcons: [0,0,0,0,0,0,0,0,0],
           aPages: [],
         }
+
+        slice.oIcons[nNewIconId].nLinkedPageId=nNewPageId;
         slice.nPageChangeCounter++;
         /* back icon */
         const nBackIconId=generateIconId();
         slice.oIcons[nBackIconId]={
           sIconName: "Back",
-          sIconImagePath: "icon_back.png",
+          sIconImagePath: "icon_back.bmp",
           nLinkedPageId: 0,
           sIconProgramPath: "",
           bIconIsBack: true,
@@ -152,29 +154,38 @@ const iconStateSlice = createSlice({
       if(nLinkedPageId!=0){
         slice.nPageChangeCounter++;
         removePage(nLinkedPageId);
-      }else{
-        removeIcon(nIconId)
+        for(let i=0;i<oActivePage.aPages.length;i++){
+          if(oActivePage.aPages[i]==nLinkedPageId){
+            slice.oIconPages[nActiveConfigPageId].aPages.splice(i,1);
+          }
+        }
       }
+      removeIcon(nIconId)
 
-      oActivePage.aIcons[nIconPosition]=0;
+
+      slice.oIconPages[nActiveConfigPageId].aIcons[nIconPosition]=0;
 
       function removePage(nPageId:number){
+        console.log("delete page "+nPageId)
         const page= slice.oIconPages[nPageId];
         /* remove all pages linked to this page */
         page.aPages.forEach((nPageId:number)=>{
           removePage(nPageId);
         });
         /* remove all icons linked to this page */
-        page.aIcons.forEach((nIconId:number)=>{
-          removeIcon(nIconId);
+        page.aIcons.forEach((nIconIdR:number)=>{
+          if(nIconIdR!=0){
+            removeIcon(nIconIdR);
+          }
         });
         if(slice.nActivePageId==nPageId){
           slice.nActivePageId=0;
         }
         delete slice.oIconPages[nPageId];
       }
-      function removeIcon(nIconId:number){
-        delete slice.oIcons[nIconId];
+      function removeIcon(nIconIdRem:number){
+        console.log("delete icon "+nIconIdRem)
+        delete slice.oIcons[nIconIdRem];
       }
 
     }

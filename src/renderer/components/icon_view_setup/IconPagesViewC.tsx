@@ -43,7 +43,7 @@ const IconPagesViewC = (props: Props) => {
         const childPage = oIconPages[childId];
 
         children.push({
-          id: `${childPage}`,
+          id: `${childId}`,
           label: childPage.sPageName,
           children: [],
         });
@@ -56,6 +56,8 @@ const IconPagesViewC = (props: Props) => {
   }
 
   const fOnItemClick = (itemId: number) => {
+    console.log(treeItems);
+    console.log('Selected page: ' + itemId);
     store.dispatch(setActiveConfigPageId(itemId));
   };
 

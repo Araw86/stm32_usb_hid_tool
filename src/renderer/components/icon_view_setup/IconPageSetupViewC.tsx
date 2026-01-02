@@ -42,6 +42,9 @@ export default function IconPageSetupViewC({
 
   const fHandleSelect = (index: number) => {
     console.log('fHandleSelect ' + index);
+    if (oIcons[oIconPage.aIcons[index]]?.bIconIsBack) {
+      return;
+    }
     setOpenDialogPos(index);
     setBDialogOpen(true);
   };
