@@ -16,7 +16,6 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { Box } from '@mui/material';
 import TestComponent from './components/TestComponent';
-import IconScreenComponent from './components/IconScreenComponent';
 import KeyboardContainer from './components/keyboard_layout/KeyboardContainer';
 import IconsViewSetupC from './components/icon_view_setup/IconsViewSetupC';
 
@@ -47,7 +46,6 @@ export default function App(): JSX.Element {
         <Box>test</Box>
         <TestComponent />
         <KeyboardContainer />
-        <IconScreenComponent />
         <IconsViewSetupC />
       </Provider>
     </ThemeProvider>

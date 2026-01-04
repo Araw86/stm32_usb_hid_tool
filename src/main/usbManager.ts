@@ -4,6 +4,7 @@ import {store} from './store/mainStore'
 import { deviceIsConnected, deviceIsDisconnected } from '../shared/redux/slices/testSlice';
 import {setAllKeyTreshold, setKeyTreshold, setKeyAnalogState} from '../shared/redux/slices/keyboardKeysStateSlice';
 import { KEYBOARD_KEYS_LENGTH, SCREEN_BUTTONS } from '../shared/config/imageArrayConf';
+import { iconPress } from '../shared/redux/slices/iconStateSlice';
 
 
 let hidDevice : any | null; 
@@ -209,7 +210,7 @@ function fHidSendImage3(image:Buffer){
 }
 
 function fHidReceiveData(aData:any[]){
-  // console.log("received " );
+  console.log("received " );
   switch(aData[0]){
     case 3:
       let aKeyAnalogValue = new Uint16Array(KEYBOARD_KEYS_LENGTH);
@@ -224,21 +225,39 @@ function fHidReceiveData(aData:any[]){
           aBtnPress[i]=aData[i+1];
         }
         //todo add dispatch to iconStateSlice, function is missing
-        // console.log("screen buttons" + aBtnPress);
+        store.dispatch(iconPress(Array.from(aBtnPress)));
         break;
       default:
         console.log('Unknown data received');
   }
-  // console.log(aData);
+  //console.log(aData);
 }
 
 function fHidError(error:any){
   console.log(error);
 }
 
+const HID_DATA_MESSAGE_SIZE4 = 8
+function fHidSendEmptyImage(imageNumber:number){
+  if(hidDevice==null){
+    console.log(`device not connected`);
+    return;
+  }
+  let aCmd = new Uint8Array(8);
+
+  aCmd[0]=1;
+  aCmd[1] = 0xff & imageNumber;
+  aCmd[2] = 0xff & (imageNumber >> 8);
+  aCmd[4]=0;
+  aCmd[5]=0;
+  aCmd[6]=0;
+  aCmd[7]=0;
+  hidDevice.write(aCmd);
+}
+
 // function fHidSendKey
 
 
-const usbManager = {fUsbManager,fHidSend,fUsbConnect,fUsbDisconnect,fHidSendImage,fHidSendImage2,fHidSendImage3};
+const usbManager = {fUsbManager,fHidSend,fUsbConnect,fUsbDisconnect,fHidSendImage,fHidSendImage2,fHidSendImage3,fHidSendEmptyImage};
 
 export default usbManager;

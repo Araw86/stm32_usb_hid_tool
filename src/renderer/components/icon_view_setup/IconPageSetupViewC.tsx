@@ -54,7 +54,7 @@ export default function IconPageSetupViewC({
     if (oIcons[item] && oIcons[item].sIconImagePath != '') {
       return '../database/' + oIcons[item].sIconImagePath;
     } else {
-      return '';
+      return null;
     }
   });
   console.log(items);

@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface IconPageInterface {
   sPageName: string;
   bIsRootPage: boolean;
+  nParentPageId?: number;
   aIcons: number[];
   aPages: number[];
 }
@@ -115,6 +116,7 @@ const iconStateSlice = createSlice({
         slice.oIconPages[nNewPageId]={
           sPageName: payload.sIconName,
           bIsRootPage: false,
+          nParentPageId: nActiveConfigPageId,
           aIcons: [0,0,0,0,0,0,0,0,0],
           aPages: [],
         }
@@ -188,11 +190,44 @@ const iconStateSlice = createSlice({
         delete slice.oIcons[nIconIdRem];
       }
 
+    },
+    iconPress(state,action: PayloadAction<number[]>){
+      const nIconPosition=action.payload;
+      let nButtonPressed=-1;
+      for(let i=0;i<nIconPosition.length;i++){
+        if(nIconPosition[i]!==0){
+          nButtonPressed=i;
+          console.log(' button press ' +nButtonPressed)
+        }
+      }
+      const nActivePageId=state.nActivePageId;
+      const oActivePage=state.oIconPages[nActivePageId];
+      if(nButtonPressed!=-1){
+        let nIconPressed = oActivePage.aIcons[nButtonPressed];
+        console.log(nIconPressed)
+        const oIconPressed=state.oIcons[nIconPressed];
+        if(oIconPressed.bIconIsBack){
+          /* go back to parent page */
+          const nParentPageId=state.oIconPages[nActivePageId].nParentPageId;
+          if(nParentPageId!==undefined){
+            state.nActivePageId=nParentPageId;
+            state.nPageChangeCounter++;
+          }
+        }
+        else if(oIconPressed.nLinkedPageId!=0){
+          /* go to linked page */
+          state.nActivePageId=oIconPressed.nLinkedPageId;
+          state.nPageChangeCounter++;
+        }else{
+          /* launch program */
+        }
+      }
+      console.log(' button press ' +nIconPosition)
     }
   }
 });
 
 /*export dispatch functions */
-export const {setActiveIcons, setAllIcons, setIcon, setActivePageId, setActiveConfigPageId, addIcon, removeIcon } = iconStateSlice.actions;
+export const {setActiveIcons, setAllIcons, setIcon, setActivePageId, setActiveConfigPageId, addIcon, removeIcon, iconPress} = iconStateSlice.actions;
 /* export reducer */
 export default iconStateSlice.reducer;
