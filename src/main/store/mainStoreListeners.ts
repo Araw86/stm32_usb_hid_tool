@@ -110,7 +110,7 @@ export function createMainListeners() {
   listener.startListening({
     type: 'iconState/iconPress',
     effect: async (action: PayloadAction<number[]>,listenerApi) => {
-      const stateSlices = listenerApi.getState() as { iconStateSlice: IconStateInterface };
+      const stateSlices = listenerApi.getOriginalState() as { iconStateSlice: IconStateInterface };
       const state = stateSlices.iconStateSlice;
       const nIconPosition=action.payload;
       let nButtonPressed=-1;
