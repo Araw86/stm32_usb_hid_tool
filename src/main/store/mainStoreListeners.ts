@@ -7,6 +7,8 @@ import fileReader from '../imageFileReader';
 
 import storeIcons from '../storeIcons';
 import { CombinedStateInterface } from 'src/shared/redux/combinedReducer';
+import { exec } from 'child_process';
+import { IconStateInterface } from 'src/shared/redux/slices/iconStateSlice';
 /* create listener to listen for changes in store in main*/
 export function createMainListeners() {
   const listener = createListenerMiddleware();
@@ -102,6 +104,46 @@ export function createMainListeners() {
           usbManager.fHidSendEmptyImage(index);
         }
       })
+    }
+  });
+
+  listener.startListening({
+    type: 'iconState/iconPress',
+    effect: async (action: PayloadAction<number[]>,listenerApi) => {
+      const stateSlices = listenerApi.getState() as { iconStateSlice: IconStateInterface };
+      const state = stateSlices.iconStateSlice;
+      const nIconPosition=action.payload;
+      let nButtonPressed=-1;
+      for(let i=0;i<nIconPosition.length;i++){
+        if(nIconPosition[i]!==0){
+          nButtonPressed=i;
+        }
+      }
+      let sProgramPath: string | null = null;
+      if(nButtonPressed!=-1){
+        const nActivePageId=state.nActivePageId;
+        const oActivePage=state.oIconPages[nActivePageId];
+        let nIconPressed = oActivePage.aIcons[nButtonPressed];
+        const oIconPressed=state.oIcons[nIconPressed];
+        if(oIconPressed!==undefined){
+          if(oIconPressed.bIconIsBack){
+
+          }
+          else if(oIconPressed.nLinkedPageId!=0){
+
+          }else{
+            // /* launch program */
+            const sProgramPath=oIconPressed.sIconProgramPath;
+            console.log('launch program '+sProgramPath)
+            exec(sProgramPath,(error,stdout,stderr)=>{
+              if (error) {
+                console.error(`Error executing file: ${error}`);
+                return;
+              }
+            })
+          }
+        }
+      }
     }
   });
  return listener;

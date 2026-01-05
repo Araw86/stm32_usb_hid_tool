@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import exec from 'child_process';
+
 
 export interface IconPageInterface {
   sPageName: string;
@@ -206,20 +208,23 @@ const iconStateSlice = createSlice({
         let nIconPressed = oActivePage.aIcons[nButtonPressed];
         console.log(nIconPressed)
         const oIconPressed=state.oIcons[nIconPressed];
-        if(oIconPressed.bIconIsBack){
-          /* go back to parent page */
-          const nParentPageId=state.oIconPages[nActivePageId].nParentPageId;
-          if(nParentPageId!==undefined){
-            state.nActivePageId=nParentPageId;
-            state.nPageChangeCounter++;
+        if(oIconPressed!==undefined){
+          if(oIconPressed.bIconIsBack){
+            /* go back to parent page */
+            const nParentPageId=state.oIconPages[nActivePageId].nParentPageId;
+            if(nParentPageId!==undefined){
+              state.nActivePageId=nParentPageId;
+              state.nPageChangeCounter++;
+            }
           }
-        }
-        else if(oIconPressed.nLinkedPageId!=0){
-          /* go to linked page */
-          state.nActivePageId=oIconPressed.nLinkedPageId;
-          state.nPageChangeCounter++;
-        }else{
-          /* launch program */
+          else if(oIconPressed.nLinkedPageId!=0){
+            /* go to linked page */
+            state.nActivePageId=oIconPressed.nLinkedPageId;
+            state.nPageChangeCounter++;
+          }else{
+            // /* launch program */
+
+          }
         }
       }
       console.log(' button press ' +nIconPosition)
