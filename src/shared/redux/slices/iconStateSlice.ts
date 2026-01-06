@@ -74,8 +74,16 @@ const iconStateSlice = createSlice({
   name:'iconState',
   initialState,
   reducers:{
-    setActiveIcons(slice,action: PayloadAction<string[]>){
-      slice.activeIcons=action.payload;
+    setActiveIcons(slice,action: PayloadAction<IconStateInterface>){
+      slice.nActiveConfigPageId=action.payload.nActiveConfigPageId;
+      slice.nActivePageId=action.payload.nActivePageId;
+      slice.oIconPages=action.payload.oIconPages;
+      slice.oIcons=action.payload.oIcons;
+      slice.nIdPageGenerator=action.payload.nIdPageGenerator;
+      slice.nIdIconGenerator=action.payload.nIdIconGenerator;
+      slice.nPageChangeCounter=action.payload.nPageChangeCounter;
+      // slice=action.payload;
+      console.log(slice)
     },
     setAllIcons(slice,action: PayloadAction<string[]>){
       slice.allIcons=action.payload;

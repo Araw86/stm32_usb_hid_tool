@@ -1,14 +1,14 @@
 /*redux import*/
-import { createListenerMiddleware, PayloadAction } from '@reduxjs/toolkit';
+import { createListenerMiddleware, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 
 import usbManager from '../usbManager';
 
 import fileReader from '../imageFileReader';
 
 import storeIcons from '../storeIcons';
-import { CombinedStateInterface } from 'src/shared/redux/combinedReducer';
+import { CombinedStateInterface } from '../../shared/redux/combinedReducer';
 import { exec } from 'child_process';
-import { IconStateInterface } from 'src/shared/redux/slices/iconStateSlice';
+import { addIcon, iconPress, IconStateInterface, removeIcon, setActivePageId } from '../../shared/redux/slices/iconStateSlice';
 /* create listener to listen for changes in store in main*/
 export function createMainListeners() {
   const listener = createListenerMiddleware();
@@ -144,6 +144,15 @@ export function createMainListeners() {
           }
         }
       }
+    }
+  });
+
+  listener.startListening({
+    matcher: isAnyOf(iconPress,removeIcon,addIcon,setActivePageId),
+    effect: async (action, listenerApi) => {
+
+      console.log('store state')
+      storeIcons.storeActiveIcons();
     }
   });
  return listener;
