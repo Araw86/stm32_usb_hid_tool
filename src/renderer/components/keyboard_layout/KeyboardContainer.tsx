@@ -1,17 +1,10 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import MainKeyboard from './MainKeyboard';
-import SideKeypad from './SideKeypad';
 import { Key } from '@mui/icons-material';
 import KeyboardGridNumComponent from './KeyboardNumGridComponent';
 import KeyboardGridComponent from './KeyboardGridComponent';
-
-interface KeyboardContainerProps {
-  mainKeyComponents: React.ReactNode[];
-  navKeyComponents: React.ReactNode[];
-  numKeyComponents: React.ReactNode[];
-  addKeyComponents: React.ReactNode[];
-}
+import KeyboardKeyContainer from './KeyboardKeyContainer';
+interface KeyboardContainerProps {}
 
 const mainKeyLayout: (string | null)[][] = [
   [
@@ -50,8 +43,8 @@ const mainKeyLayout: (string | null)[][] = [
   ],
   ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
   ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
-  ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift'],
-  ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Fn', 'Code', 'Ctrl'],
+  ['ShiftL', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'ShiftR'],
+  ['CtrlL', 'Win', 'AltL', 'Space', 'AltR', 'Fn', 'Code', 'CtrlR'],
 ];
 
 const mainKeySpanMap: Record<string, number> = {
@@ -59,19 +52,22 @@ const mainKeySpanMap: Record<string, number> = {
   Tab: 1.5,
   Caps: 1.75,
   Enter: 2.25,
-  Shift: 2.25,
+  ShiftL: 2.25,
+  ShiftR: 2.75,
   Space: 5.9,
-  Ctrl: 1.5,
+  CtrlL: 1.5,
+  CtrlR: 1.5,
   Win: 1.5,
-  Alt: 1.5,
+  AltL: 1.5,
+  AltR: 1.5,
   Fn: 1.5,
   Code: 1.5,
 };
 
 const navLayout: (string | null)[][] = [
   ['Print', 'Scroll', 'Pause'],
-  ['Insert', 'Home', 'PgUp'],
-  ['Delete', 'End', 'PgDn'],
+  ['Insert', 'Home', 'PageUp'],
+  ['Delete', 'End', 'PageDown'],
   [null, null, null],
   [null, 'ArrowUp', null],
   ['ArrowLeft', 'ArrowDown', 'ArrowRight'],
@@ -79,11 +75,11 @@ const navLayout: (string | null)[][] = [
 
 const numpadLayout: (string | null)[][] = [
   ['FnA', 'FnB', 'FnC', 'FnD'],
-  ['NumLock', '/', '*', '-'],
-  ['7', '8', '9', '+N'],
-  ['4', '5', '6'],
-  ['1', '2', '3', 'EnterN'],
-  ['0', '.'],
+  ['NumLock', '/N', '*N', '-N'],
+  ['7N', '8N', '9N', '+N'],
+  ['4N', '5N', '6N'],
+  ['1N', '2N', '3N', 'EnterN'],
+  ['0N', '.N'],
 ];
 
 const additionalLayout: (string | null)[][] = [
@@ -100,36 +96,25 @@ const sideKeySpanMap: Record<string, number> = {
   '0': 1.9,
 };
 
-const KeyboardContainer: React.FC<KeyboardContainerProps> = ({
-  mainKeyComponents,
-  navKeyComponents,
-  numKeyComponents,
-  addKeyComponents,
-}) => {
+const KeyboardContainer: React.FC<KeyboardContainerProps> = () => {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+    <Box sx={{ display: 'flex', alignItems: 'flex-start', padding: '20px' }}>
       <KeyboardGridComponent
-        keyComponents={mainKeyComponents}
         keyLayout={mainKeyLayout}
         keySpanMap={mainKeySpanMap}
       />
       <KeyboardGridComponent
-        keyComponents={navKeyComponents}
         keyLayout={navLayout}
         keySpanMap={sideKeySpanMap}
       />
       <KeyboardGridNumComponent
-        keyComponents={numKeyComponents}
         keyLayout={numpadLayout}
         keySpanMap={sideKeySpanMap}
       />
       <KeyboardGridComponent
-        keyComponents={addKeyComponents}
         keyLayout={additionalLayout}
         keySpanMap={sideKeySpanMap}
       />
-      {/* <MainKeyboard keyComponents={mainKeyComponents} /> */}
-      {/* <SideKeypad keyComponents={sideKeyComponents} /> */}
     </Box>
   );
 };

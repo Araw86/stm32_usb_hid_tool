@@ -2,6 +2,9 @@ import HID from 'node-hid'
 import {usb,findByIds } from 'usb'
 import {store} from './store/mainStore'
 import { deviceIsConnected, deviceIsDisconnected } from '../shared/redux/slices/testSlice';
+import {setAllKeyTreshold, setKeyTreshold, setKeyAnalogState} from '../shared/redux/slices/keyboardKeysStateSlice';
+import { KEYBOARD_KEYS_LENGTH, SCREEN_BUTTONS } from '../shared/config/imageArrayConf';
+import { iconPress, setActivePageId } from '../shared/redux/slices/iconStateSlice';
 
 
 let hidDevice : any | null; 
@@ -63,6 +66,10 @@ async function fUsbConnect(){
    let sPath = findDevicePath(hidDevices,22288,1155,1);
    hidDevice = await HID.HIDAsync.open(sPath);
    console.log('connected');
+   store.dispatch(setActivePageId(0));
+   hidDevice.on("error",fHidError);
+   hidDevice.on("data",fHidReceiveData);
+  
 }
 
 function fUsbDisconnect(): void{
@@ -203,9 +210,55 @@ function fHidSendImage3(image:Buffer){
   }
 }
 
+function fHidReceiveData(aData:any[]){
+  console.log("received " );
+  switch(aData[0]){
+    case 3:
+      let aKeyAnalogValue = new Uint16Array(KEYBOARD_KEYS_LENGTH);
+      for(let i=0;i<KEYBOARD_KEYS_LENGTH;i++){
+        aKeyAnalogValue[i]=aData[2*i+1]+(aData[2*i+2]<<8);
+      }
+      store.dispatch(setKeyAnalogState(Array.from(aKeyAnalogValue)));
+      break;
+      case 4:
+        let aBtnPress = new Uint8Array(SCREEN_BUTTONS);
+        for(let i=0;i<SCREEN_BUTTONS;i++){
+          aBtnPress[i]=aData[i+1];
+        }
+        //todo add dispatch to iconStateSlice, function is missing
+        store.dispatch(iconPress(Array.from(aBtnPress)));
+        break;
+      default:
+        console.log('Unknown data received');
+  }
+  //console.log(aData);
+}
+
+function fHidError(error:any){
+  console.log(error);
+}
+
+const HID_DATA_MESSAGE_SIZE4 = 8
+function fHidSendEmptyImage(imageNumber:number){
+  if(hidDevice==null){
+    console.log(`device not connected`);
+    return;
+  }
+  let aCmd = new Uint8Array(8);
+
+  aCmd[0]=1;
+  aCmd[1] = 0xff & imageNumber;
+  aCmd[2] = 0xff & (imageNumber >> 8);
+  aCmd[4]=0;
+  aCmd[5]=0;
+  aCmd[6]=0;
+  aCmd[7]=0;
+  hidDevice.write(aCmd);
+}
+
 // function fHidSendKey
 
 
-const usbManager = {fUsbManager,fHidSend,fUsbConnect,fUsbDisconnect,fHidSendImage,fHidSendImage2,fHidSendImage3};
+const usbManager = {fUsbManager,fHidSend,fUsbConnect,fUsbDisconnect,fHidSendImage,fHidSendImage2,fHidSendImage3,fHidSendEmptyImage};
 
 export default usbManager;

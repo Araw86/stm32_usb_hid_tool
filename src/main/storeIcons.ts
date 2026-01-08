@@ -4,9 +4,9 @@ import Store from 'electron-store';
 
 import { store } from './store/mainStore';
 
-import { setActiveIcons, setAllIcons } from '../shared/redux/slices/iconStateSlice';
+import { IconStateInterface, setActiveIcons, setAllIcons } from '../shared/redux/slices/iconStateSlice';
 
-import { IMAGE_ARRAY_LENGTH } from './config/imageArrayConf';
+import { IMAGE_ARRAY_LENGTH } from '../shared/config/imageArrayConf';
 
 import { app } from "electron";
 import path from "path";
@@ -23,33 +23,31 @@ sAppPath = path.join(sAppPath, 'database');
 console.log('Path to app: ' + sAppPath)
 
 
-const electronStore = new Store({name: `storeIconState`,cwd: sAppPath, schema:{
-  icons:{type:`array`,
-         items:{type:`string`}
-  }
-}});
+const electronStore = new Store({name: `storeIconState`,cwd: sAppPath});
 
 
 
 /*read storead data and put them to store */
 export function initStoreIcons() {
   let saved: string[] = Array(IMAGE_ARRAY_LENGTH).fill("");
-  const stoiredValue = electronStore.get(`icons`);
+  const stoiredValue = electronStore.get(`iconState`);
   console.log("load estore")
-  if ((stoiredValue === undefined) ||!Array.isArray(stoiredValue)){
-    electronStore.set(`icons`,saved);
+  console.log(stoiredValue)
+  const iconState = store.getState().iconStateSlice;
+  if ((stoiredValue === undefined)){
+    electronStore.set(`iconState`,JSON.stringify(iconState));
   }else{
-    saved = stoiredValue as string[];
+    store.dispatch(setActiveIcons(JSON.parse(stoiredValue as string) as IconStateInterface));
   }
   console.log(saved)
   const aIconsOnDisk = imageFileReader.aListImages();
   console.log(aIconsOnDisk);
-  store.dispatch(setActiveIcons(saved));
   store.dispatch(setAllIcons(aIconsOnDisk));
 };
 
-function storeActiveIcons(icons:Array<string>) {
-  electronStore.set(`icons`,icons);
+function storeActiveIcons() {
+  const iconState = store.getState().iconStateSlice;
+  electronStore.set(`iconState`,JSON.stringify(iconState));
 };
 
 const storeIcons = {initStoreIcons,storeActiveIcons};

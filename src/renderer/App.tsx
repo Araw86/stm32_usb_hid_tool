@@ -16,8 +16,8 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { Box } from '@mui/material';
 import TestComponent from './components/TestComponent';
-import IconScreenComponent from './components/IconScreenComponent';
-import KeyboardLayout from './components/keyboard_layout/KeyboardLayout';
+import KeyboardContainer from './components/keyboard_layout/KeyboardContainer';
+import IconsViewSetupC from './components/icon_view_setup/IconsViewSetupC';
 
 // import AppWindows from "./components/AppWindows";
 
@@ -43,10 +43,10 @@ export default function App(): JSX.Element {
       <CssBaseline />
       <Provider store={store}>
         {/* <AppWindows /> */}
-        <Box>test</Box>
-        <TestComponent />
-        <KeyboardLayout />
-        <IconScreenComponent />
+        {/* <Box>test</Box>
+        <TestComponent /> */}
+        <KeyboardContainer />
+        <IconsViewSetupC />
       </Provider>
     </ThemeProvider>
   );

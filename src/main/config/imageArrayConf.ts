@@ -1,4 +1,0 @@
-
-const IMAGE_ARRAY_LENGTH = 9;
-
-export { IMAGE_ARRAY_LENGTH };

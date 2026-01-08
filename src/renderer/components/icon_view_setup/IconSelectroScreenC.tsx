@@ -9,60 +9,40 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
-import { store } from '../store/storeRenderer';
-import { setIcon } from '../../shared/redux/slices/iconStateSlice';
 
 type Props = {
   images: string[]; // array of image names or paths
-  open?: boolean; // initial open state (default true)
+  open: boolean; // initial open state (default true)
   basePath?: string; // optional base path to prepend to image names (default "/assets/icons/")
-  actionType?: string; // redux action type to dispatch (default "ICON_SELECTED")
   onClose?: () => void; // optional callback when dialog is closed
   onSelect?: (image: string) => void; // optional callback when an image is selected (in addition to dispatch)
-  index?: number; // optional index of the icon being selected
 };
 
 const IconSelectroScreenC: React.FC<Props> = ({
   images,
-  open: openProp = true,
+  open: openProp = false,
   basePath = '../database/',
-  actionType = 'ICON_SELECTED',
   onClose,
   onSelect,
-  index = -1,
 }) => {
   // const dispatch = useDispatch();
   console.log('openProp ' + openProp);
-  const [openDialog, setOpen] = useState<boolean>(openProp);
-  const [openDialogId, setOpenDialogId] = useState<number>(index);
   const handleClose = () => {
     console.log('inc close');
-    setOpen(false);
+
     onClose?.();
   };
+
   console.log('IconSelectroScreenC');
-  console.log('Open state' + openDialog);
+  console.log('Open state' + openProp);
   const handleSelect = (imgName: string) => {
     console.log('handleSelect ' + imgName);
-    store.dispatch(setIcon({ position: openDialogId, icon: imgName }));
-    // const payload =
-    //   imgName.startsWith('http') || imgName.startsWith('/')
-    //     ? imgName
-    //     : `${basePath}${imgName}`;
-    // dispatch({ type: actionType, payload });
-    // onSelect?.(payload);
-
-    setOpen(false);
+    onSelect?.(imgName);
     onClose?.();
   };
 
-  useEffect(() => {
-    setOpen(openProp);
-    setOpenDialogId(index);
-  }, [openProp, index]);
-
   return (
-    <Dialog open={openDialog} onClose={handleClose}>
+    <Dialog open={openProp} onClose={handleClose}>
       <AppBar position="sticky">
         <Toolbar>
           <Typography variant="h6" sx={{ flex: 1 }}>
@@ -100,6 +80,7 @@ const IconSelectroScreenC: React.FC<Props> = ({
                       height: 'auto',
                       borderRadius: 8,
                       display: 'block',
+                      rotate: '180deg',
                     }}
                     onClick={() => handleSelect(name)}
                   />
