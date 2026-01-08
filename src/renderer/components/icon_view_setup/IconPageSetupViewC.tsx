@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
-import { Box, Typography } from '@mui/material';
+import { Box, CardContent, Typography } from '@mui/material';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
 import { useSelector } from 'react-redux';
@@ -54,29 +54,41 @@ export default function IconPageSetupViewC({
     if (oIcons[item] && oIcons[item].sIconImagePath != '') {
       return '../database/' + oIcons[item].sIconImagePath;
     } else {
-      return null;
+      return '../database/' + 'default.bmp';
     }
+  });
+  const iconNames = oIconPage.aIcons.map((item, index) => {
+    return oIcons[item]?.sIconName;
   });
   console.log(items);
 
+  /* invert items array*/
+  const itemsInverted = items.reverse();
+  const invertedIconNames = iconNames.reverse();
   return (
-    <Box width={200}>
+    <Box width={250}>
       <Typography>Page configuration</Typography>
-      <Grid container spacing={gap}>
-        {items.map((src, idx) => (
-          <Grid size={4} key={idx}>
-            <Card>
-              <CardActionArea onClick={() => fHandleSelect(idx)}>
+      <Grid container spacing={gap} sx={{alignItems: "stretch"}} >
+        {itemsInverted.map((src, idx) => (
+          <Grid size={4} key={8-idx} >
+            <Card sx={{ height: '100%' }}>
+              <CardActionArea onClick={() => fHandleSelect(8-idx)}>
                 <CardMedia
                   component="img"
                   image={src}
-                  alt={`${imageAlt}-${idx}`}
+                  alt={`${imageAlt}-${8-idx}`}
                   sx={{
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
+                    rotate: '180deg',
                   }}
                 />
+                <CardContent>
+                  <Typography variant="body2" color="text.secondary">
+                    {invertedIconNames[idx]}
+                  </Typography>
+                </CardContent>
               </CardActionArea>
             </Card>
           </Grid>

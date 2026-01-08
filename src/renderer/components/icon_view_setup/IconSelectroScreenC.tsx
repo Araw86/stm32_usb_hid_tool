@@ -80,6 +80,7 @@ const IconSelectroScreenC: React.FC<Props> = ({
                       height: 'auto',
                       borderRadius: 8,
                       display: 'block',
+                      rotate: '180deg',
                     }}
                     onClick={() => handleSelect(name)}
                   />

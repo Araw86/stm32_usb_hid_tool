@@ -4,7 +4,7 @@ import {store} from './store/mainStore'
 import { deviceIsConnected, deviceIsDisconnected } from '../shared/redux/slices/testSlice';
 import {setAllKeyTreshold, setKeyTreshold, setKeyAnalogState} from '../shared/redux/slices/keyboardKeysStateSlice';
 import { KEYBOARD_KEYS_LENGTH, SCREEN_BUTTONS } from '../shared/config/imageArrayConf';
-import { iconPress } from '../shared/redux/slices/iconStateSlice';
+import { iconPress, setActivePageId } from '../shared/redux/slices/iconStateSlice';
 
 
 let hidDevice : any | null; 
@@ -66,6 +66,7 @@ async function fUsbConnect(){
    let sPath = findDevicePath(hidDevices,22288,1155,1);
    hidDevice = await HID.HIDAsync.open(sPath);
    console.log('connected');
+   store.dispatch(setActivePageId(0));
    hidDevice.on("error",fHidError);
    hidDevice.on("data",fHidReceiveData);
   

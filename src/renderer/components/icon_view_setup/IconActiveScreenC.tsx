@@ -44,16 +44,18 @@ export default function IconActiveScreenC({
     if (oIcons[item] && oIcons[item].sIconImagePath != '') {
       return '../database/' + oIcons[item].sIconImagePath;
     } else {
-      return '';
+      return '../database/' + 'default.bmp';
     }
   });
   console.log(items);
+  /* invert items array*/
+  const itemsInverted = items.reverse();
 
   return (
-    <Box width={200}>
+    <Box width={250}>
       <Typography>Active keyboard display view</Typography>
       <Grid container spacing={gap}>
-        {items.map((src, idx) => (
+        {itemsInverted.map((src, idx) => (
           <Grid size={4} key={idx}>
             <Card>
               <CardActionArea>
@@ -65,6 +67,7 @@ export default function IconActiveScreenC({
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
+                    rotate: '180deg',
                   }}
                 />
               </CardActionArea>

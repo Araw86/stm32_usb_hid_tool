@@ -43,8 +43,8 @@ export default function App(): JSX.Element {
       <CssBaseline />
       <Provider store={store}>
         {/* <AppWindows /> */}
-        <Box>test</Box>
-        <TestComponent />
+        {/* <Box>test</Box>
+        <TestComponent /> */}
         <KeyboardContainer />
         <IconsViewSetupC />
       </Provider>
