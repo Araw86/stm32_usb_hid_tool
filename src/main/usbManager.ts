@@ -46,7 +46,7 @@ function deviceAttached(device:any){
   if ((vid == TARGET_VID) && ( pid == TARGET_PID)){
     console.log('Attach')
     fUsbConnect();
-    store.dispatch(deviceIsConnected());
+    
   }
 }
 
@@ -66,6 +66,7 @@ async function fUsbConnect(){
    let sPath = findDevicePath(hidDevices,22288,1155,1);
    hidDevice = await HID.HIDAsync.open(sPath);
    console.log('connected');
+   store.dispatch(deviceIsConnected());
    store.dispatch(setActivePageId(0));
    hidDevice.on("error",fHidError);
    hidDevice.on("data",fHidReceiveData);

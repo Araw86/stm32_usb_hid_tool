@@ -75,6 +75,15 @@ export function createMainListeners() {
   //   }
   // });
 
+    listener.startListening({
+    type: 'testReducer/deviceIsConnected',
+    effect: async (action: PayloadAction, state: any) => {
+      console.log('connect send icons')
+      sendIcons(action, state);
+
+    }
+  });
+
   listener.startListening({
     predicate: (action, currentState:CombinedStateInterface, previousState:CombinedStateInterface) => {
       if (currentState.iconStateSlice?.nActivePageId !== previousState.iconStateSlice?.nActivePageId) {
@@ -85,7 +94,12 @@ export function createMainListeners() {
       }
       return false;
     },
-    effect: async (action, state) => {
+    effect: async (action: PayloadAction, state: any) => {
+      sendIcons(action, state);
+    }
+  });
+
+  function sendIcons(action: PayloadAction, state: any){
       console.log(`activePageId changed`);
       let aFileList= fileReader.aListImages();
 
@@ -104,8 +118,7 @@ export function createMainListeners() {
           usbManager.fHidSendEmptyImage(index);
         }
       })
-    }
-  });
+  }
 
   listener.startListening({
     type: 'iconState/iconPress',
