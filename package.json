@@ -1,6 +1,6 @@
 {
   "name": "stm32_usb_hid_tool",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "stm32 usb hid demonstration tool",
   "author": "Radek Ripa",
   "private": true,
