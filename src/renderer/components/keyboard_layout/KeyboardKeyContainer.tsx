@@ -24,7 +24,7 @@ const KeyboardKeyContainer: React.FC<KeyboardKeyContainer> = ({
   return (
     <Box>
       <Typography>{sKeyboardKeyText}</Typography>
-      <Typography fontSize={'0.500rem'}>{nKeyboardAnalogValue}</Typography>
+      <Typography fontSize={'0.750rem'}>{nKeyboardAnalogValue}</Typography>
       {/* <Typography fontSize={'0.500rem'}>{nKeyboardTresholdValue}</Typography> */}
     </Box>
   );
