@@ -217,7 +217,7 @@ function fHidReceiveData(aData:any[]){
     case 3:
       let aKeyAnalogValue = new Uint16Array(KEYBOARD_KEYS_LENGTH);
       for(let i=0;i<KEYBOARD_KEYS_LENGTH;i++){
-        aKeyAnalogValue[i]=aData[2*i+1]+(aData[2*i+2]<<8);
+        aKeyAnalogValue[i]=aData[(2*i)+1]+(aData[(2*i)+2]<<8);
       }
       store.dispatch(setKeyAnalogState(Array.from(aKeyAnalogValue)));
       break;

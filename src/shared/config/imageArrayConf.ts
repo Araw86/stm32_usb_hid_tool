@@ -74,7 +74,7 @@ const KEYBOARD_KEY_ARRAY: KeyboardKeyArrayInterface = {
     'K':{nKeyId:90, keyText:'K'}, 
     'L':{nKeyId:114, keyText:'L'}, 
     ';':{nKeyId:7, keyText:';'},
-    "'":{nKeyId:52, keyText:"'"}, 
+    "'":{nKeyId:31, keyText:"'"}, 
     'Enter':{nKeyId:59, keyText:'Enter'},
 
     'ShiftL':{nKeyId:8, keyText:'ShiftL'}, 
@@ -95,8 +95,8 @@ const KEYBOARD_KEY_ARRAY: KeyboardKeyArrayInterface = {
     'AltL' : { nKeyId : 58 , keyText : "AltL" }, 
     'Space' : { nKeyId : 22 , keyText : "Space" }, 
     'AltR' : { nKeyId : 94 , keyText : "AltR" }, 
-    'Fn' : { nKeyId : 117 , keyText : "Fn" }, 
-    'Code' : { nKeyId : 119, keyText : "Code" }, 
+    'Fn' : { nKeyId : 118 , keyText : "Fn" }, 
+    'Code' : { nKeyId : 11, keyText : "Code" }, 
     'CtrlR' : { nKeyId : 35 , keyText :"CtrlR"},
 
     'Print':{ nKeyId : 73 , keyText : "Print" }, 
@@ -140,8 +140,8 @@ const KEYBOARD_KEY_ARRAY: KeyboardKeyArrayInterface = {
     'FnF':{nKeyId: 111, keyText:"FnF"}, 
     'FnG':{nKeyId: 113, keyText:"FnG"}, 
     'FnH':{nKeyId: 115, keyText:"FnH"},
-    'FnI':{nKeyId: 118, keyText:"FnI"},
-    'FnJ':{nKeyId: 11, keyText:"FnJ"}
+    'FnI':{nKeyId: 117, keyText:"FnI"},
+    'FnJ':{nKeyId: 119, keyText:"FnJ"}
 };
 
 export { IMAGE_ARRAY_LENGTH ,SCREEN_BUTTONS,KEYBOARD_KEYS_LENGTH,KEYBOARD_KEY_ARRAY, IMAGE_ARRAY_BUTTON_MAPPING };
