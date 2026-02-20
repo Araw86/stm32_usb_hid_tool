@@ -212,25 +212,26 @@ function fHidSendImage3(image:Buffer){
 }
 
 function fHidReceiveData(aData:any[]){
-  console.log("received " );
   switch(aData[0]){
-    case 3:
+    case 3: /* Physical key pressed received */
+      console.log(" Keyboard key received " );
       let aKeyAnalogValue = new Uint16Array(KEYBOARD_KEYS_LENGTH);
       for(let i=0;i<KEYBOARD_KEYS_LENGTH;i++){
         aKeyAnalogValue[i]=aData[(2*i)+1]+(aData[(2*i)+2]<<8);
       }
       store.dispatch(setKeyAnalogState(Array.from(aKeyAnalogValue)));
       break;
-      case 4:
-        let aBtnPress = new Uint8Array(SCREEN_BUTTONS);
-        for(let i=0;i<SCREEN_BUTTONS;i++){
-          aBtnPress[i]=aData[i+1];
-        }
-        //todo add dispatch to iconStateSlice, function is missing
-        store.dispatch(iconPress(Array.from(aBtnPress)));
-        break;
-      default:
-        console.log('Unknown data received');
+    case 4: /* Screen key pressed received */
+      console.log(" Screen key received " );  
+      let aBtnPress = new Uint8Array(SCREEN_BUTTONS);
+      for(let i=0;i<SCREEN_BUTTONS;i++){
+        aBtnPress[i]=aData[i+1];
+      }
+      //todo add dispatch to iconStateSlice, function is missing
+      store.dispatch(iconPress(Array.from(aBtnPress)));
+      break;
+    default:
+      console.log(' Unknown data received');
   }
   //console.log(aData);
 }
